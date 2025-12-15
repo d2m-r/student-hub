@@ -29,6 +29,7 @@ if(file.exists(data_path)) {
   cat("Data loaded successfully!\n")
 } else {
   # Option 2: Use built-in R dataset
+  set.seed(123)  # Set seed for reproducibility
   iris_data <- iris[sample(1:nrow(iris), 30), ]
   cat("Using built-in iris dataset\n")
 }
