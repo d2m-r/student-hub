@@ -8,6 +8,7 @@
 
 # User-specific files
 .Ruserdata
+.DS_Store
 
 # Example code in package build process
 *-Ex.R
@@ -20,6 +21,7 @@
 
 # RStudio files
 .Rproj.user/
+*.Rproj
 
 # produced vignettes
 vignettes/*.html
@@ -35,6 +37,7 @@ vignettes/*.pdf
 # Temporary files created by R markdown
 *.utf8.md
 *.knit.md
+*_files/
 
 # R Environment Variables
 .Renviron
@@ -47,3 +50,20 @@ po/*~
 
 # RStudio Connect folder
 rsconnect/
+
+# Rendered output
+*.html
+*.pdf
+*.doc*
+*.jpg
+*.jpeg
+*.png
+*.gif
+
+# Ignore exceptions
+## Negate "ignore" for specific things that meet ignore patterns
+## Anything in the output and assets folders will NOT be ignored
+## So we can exclude all html/pdf/word/images/etc by default
+## but deliberately include certain things
+!output/
+!assets/

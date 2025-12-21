@@ -2,26 +2,11 @@
 
 This directory contains templates for various course submissions and documents.
 
-## Available Templates
+## Submission Templates
 
-Templates provided here should be:
-- **Copied** to your assignment repository
-- **Completed** with your own information and work
-- **Submitted** as part of your assignment
+All submissions in the course must include a completed submission document.
+Documents include detailed instructions for submission, 
 
-## Usage Instructions
-
-1. **DO NOT** edit templates directly in this repository
-2. **Copy** the template file to your assignment repository
-3. **Rename** if required by the assignment instructions
-4. **Fill in** all required sections
-5. **Submit** according to assignment guidelines
-
-## Template Types
-
-This directory may include:
-- Project submission documents
-- Analysis report templates
-- Code documentation templates
-- Presentation templates
-- Other standardized forms required for the course
+- `core-submission.qmd`: Submit with projects working toward the 12 core objectives of the course, including "menu" and "off-the-menu" submissions.
+- `data-project-submission.qmd`: Submit with drafts (up to 3) of the integrative data project.
+- `enrichment-submission.qmd`: Submit with projects working toward the 10 optional enrichment points.

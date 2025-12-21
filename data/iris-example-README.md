@@ -2,11 +2,19 @@
 
 ## Description
 
-This is a classic dataset used for statistical analysis and machine learning. It contains measurements of iris flowers from three different species.
+This is a subset of the famous Iris dataset originally collected by Edgar Anderson and popularized by Ronald Fisher (1936).
+`iris` is a classic dataset used for teaching, learning, and practicing programming and statistical analysis/
+It contains measurements of sepal and petal size from three different species of flowers: *Iris setosa*, *Iris versicolor*, and *Iris virginica*.
+
 
 ## File
 
 - `iris-example.csv`
+    - **Rows:** 30 (sample from original dataset)
+    - **Columns:** 5
+    - **Species:** 3 (10 observations each)
+- You can access the full dataset in R using the command `data(iris)`.
+
 
 ## Variables
 
@@ -18,24 +26,6 @@ This is a classic dataset used for statistical analysis and machine learning. It
 | Petal.Width | Width of the petal | Numeric | centimeters |
 | Species | Species of iris | Categorical | setosa, versicolor, virginica |
 
-## Size
-
-- **Rows:** 30 (sample from original dataset)
-- **Columns:** 5
-- **Species:** 3 (10 observations each)
-
-## Source
-
-This is a subset of the famous Iris dataset originally collected by Edgar Anderson and popularized by Ronald Fisher (1936).
-
-## Usage
-
-This dataset is commonly used for:
-- Classification problems
-- Exploratory data analysis
-- Visualization practice
-- Statistical testing
-- Machine learning demonstrations
 
 ## Example Loading Code (R)
 
@@ -59,6 +49,3 @@ legend("topright", legend = levels(iris_data$Species),
        col = 1:3, pch = 1)
 ```
 
-## Reference
-
-Fisher, R. A. (1936). The use of multiple measurements in taxonomic problems. *Annals of Eugenics*, 7(2), 179-188.

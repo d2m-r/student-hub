@@ -1,0 +1,111 @@
+---
+title: "Enrichment Project Submission"
+format: html
+---
+
+# Submission Information
+
+-   **Student name:**
+-   **GitHub username:**
+-   **Assignment name/description:**
+-   **Date of submission:**
+
+# Submission Instructions
+
+If your enrichment project includes components that cannot reasonably be submitted as part of a GitHub repository (for example, large data files, interactive web apps), please confirm with your instructor about how to submit those components.
+
+Even if some or most of your project is submitted outside of GitHub, you should still use a GitHub repository to manage your code and other files as much as possible.
+Minimally, the repo should include this submission document and a README.md file explaining your project.
+
+1.  Confirm that all code chunks run as expected and that all .Rmd/.qmd/.md files knit without error.
+    -   If you are not able to resolve code errors, disable the code chunks that produce them before submission by adding `eval = FALSE` to the chunk options and add inline comments explaining why the code does not run.
+    -   If you are not able to resolve knitting errors, comment out the problematic sections using HTML comments (`<!--` and `-->`) and add inline comments explaining why the section does not knit.
+2.  Create a README.md file in the top level of your repo that includes:
+    -   A brief description of your project, including its goals and any relevant context
+    -   Instructions for how to run any code in the repo, including any necessary setup steps. This can be as simple as "render `example-notebook.qmd` to html`, but may need to include extra specification, like installing packages, downloading data files, accessing an external website or API, etc.
+    -   A repo structure overview, explaining what files are included and where to find key components
+    -   Any other information your grader will need to understand and evaluate your project
+2. Complete this form, including:
+    -   Description of how your project shows independent learning or skill-building beyond the core standards
+    -   Reflection on the experience of completing the enrichment project
+    -   AI use attestation at the end of this document. *Your submission will not be graded without this attestation.*
+3.  Confirm your repo contains all files needed for grading, including:
+    -   The README.md file with overview and links to any components outside the repo
+    -   Any files needed to run the code (data, scripts, notebooks)
+    -   Any knitted output (HTML, PDF, or Word document)
+    -   This completed `enrichment-submission.qmd` file
+    -   Anything else that your grader will need to fully run and grade your project from a cloned repo
+    -   *Note:* If necessary files are being ignored by your `.gitignore` file, you should add them as exceptions in the .gitignore.
+4.  Commit all changes and push all necessary files to the associated GitHub repo. Refer to the [Guidelines for GitHub Submissions](d2m-r.github.io/assessment/misc/gh-submission.html) for more details.
+    -  If submitting in a dedicated repo (i.e., *not* GitHub classrooms):
+        -  Confirm the repo contains all necessary files (e.g., .qmd, data files if any, knitted output, a copy of this submission document)
+        -  Confirm the repo is *private*
+        -  Follow the instructions in the GH submission guidelines to create your `feedback` branch and open a pull request
+    -  If submitting via other means, confirm submission formats with your instructor.
+5.  Complete the [Project Submission Form](d2m-r.github.io/submit.html) to submit your work for grading.
+    -   **Note:** Pushing your work and adding an issue to GitHub serves to let your grader know which repo and version to grade, but will not add your work to the grading queue. *Your work is not submitted until completing the Project Submission Form!*
+    
+Graders will refer to your self-evaluation in this document in reviewing your work, leaving feedback, and assigning grades.
+Grades and comments (if applicable) will be shared with you via the pull request.
+
+
+## Enrichment Self-evaluation
+
+### Description
+
+Describe how your project demonstrates independent learning or skill-building beyond the core standards.
+Explain how the work you have done connects to one or more of the broad learning objectives of the course:
+
+1. **Develop a reproducible and transparent research workflow.** Plan, execute, and document a data analysis project from start to finish including data acquisition, cleaning, analysis, visualization, and reporting.
+2. **Practice accountability & time management.** Set realistic goals, create a plan to achieve them, monitor your progress, and adjust as needed.
+3. **Engage with your research communities.** Collaborate effectively with peers, contribute to group learning, and seek help when needed.
+4. **Develop problem-solving and independent learning skills.** Develop specific strategies for debugging code, troubleshooting errors, asking good questions, and learning new skills independently using the myriad resources available online from R and open-science communities.
+
+This description does not need to take any particular form or length.
+The goal is just to convince your grader that your project was a meaningful learning experience that relates to course content and goes beyond the core standards.
+
+*Description:*
+
+
+### Reflection
+
+Write a brief reflection on your experience completing this enrichment project.
+You might consider questions such as:
+
+1. What did you learn from this experience?
+2. What challenges did you face, and how did you overcome them?
+3. How might you apply what you learned in future projects or contexts?
+4. What surprised you about the process or outcome of your project?
+5. What relevance does the work you did in this project have to your work outside this class?
+
+*Reflection:*
+
+
+
+
+## AI Use Attestation
+
+### Disclosure
+
+Check the appropriate box(es):
+
+-   [ ] I did not use AI tools of any kind to complete this assignment. (Skip to affirmation.)
+-   [ ] I used RStudio's Copilot functionality to help write code only (no written content).
+-   [ ] I used other AI tools to help write code only (no written content).
+    -   List the tools used and a brief description of how you used them:
+-   [ ] I used AI tools in other ways not listed above.
+    -   List the tools used and a brief description of how you used them:
+
+*If you used AI of any kind, write a brief reflection on how it affected your learning process for this assignment--whether positively, negatively, or both:*
+
+### Affirmation
+
+I affirm that I have not used AI tools to generate any written content in this assignment, including explanations, narrative text, reflections, or any other prose sections.
+
+I affirm that I have not used AI tools in any ways other than disclosed above.
+
+I understand that use of AI for written content or undisclosed uses will result in a zero on this assignment and possible further disciplinary action.
+
+*Type your name to affirm:*
+
+------------------------------------------------------------------------
