@@ -1,0 +1,437 @@
+---
+title: "Adoption Day at the Animal Shelter"
+---
+
+In this exercise you will practice R basics by imagining a trip to the animal shelter. As you work through the story, the comments will give you some suggested text for what each function should return, but no need to stick to these exactly. Feel free to get creative, but remember to show off your R skills!
+
+
+## The Big Decision
+
+You walk into the shelter and see a sign: "Pets pets pets! All shapes, sizes, and colors! Adopt as many pets as you want!" You decide to start simple: you want to adopt a pet, but only if it's a cat or a dog.
+
+```{r}
+#| label: adopt-cat-or-dog
+
+
+### GOAL: 
+# Create a function `adopt_pet` that takes an argument `animal`
+# If `animal` is "cat" or "dog", return "You can adopt a this [animal]!"
+# Otherwise, return "Tragically, you admit to yourself that you are woefully ill-equipped to care for this [animal]."
+###
+
+## Define adopt_pet()
+adopt_pet <- function(animal) {
+### Write function body here ###
+}
+
+
+
+## Test your function
+adopt_pet("cat") # "You can adopt this cat!"
+adopt_pet("parrot") # "Tragically, you admit to yourself that you are woefully ill-equipped to care for this parrot."
+
+## Test at least 2 more cases
+# adopt_pet(...)
+
+
+```
+
+## Getting Picky
+
+You spot a rainbow of fur colors. Knowing how much your new friend is going to shed, you decide you only want a pet that will match your wardrobe, which is exclusively black and white. Tres chic.
+
+```{r}
+#| label: adopt-pet-color
+
+
+### GOAL: 
+# Create a function `adopt_pet_color` that takes arguments `animal` and `color`
+# If `animal` is "cat" or "dog" AND `color` is "black" or "white", return "You can adopt this [color] [animal]!"
+# Otherwise, return "Nope, this [color] [animal] won't do."
+###
+
+
+## Define adopt_pet_color()
+
+
+
+## Test your function
+adopt_pet_color("cat", "orange") # "Nope, this orange cat won't do."
+adopt_pet_color("dog", "black") # "You can adopt this black dog!"
+
+## Test at least 2 more cases
+# adopt_pet_color(...)
+
+
+```
+
+
+## Counting Your New Friends
+
+You get ambitious. You want to adopt more than one pet, but only if you have enough room at home. Based on your sound reasoning, you decide that you should have a maximum of one pet per bedroom. Your apartment has three bedrooms.
+
+```{r}
+#| label: adopt-multiple-pets
+
+
+### GOAL: 
+# Create a function `adopt_multiple_pets` that takes an argument `num_pets`
+# If `num_pets` is 3 or fewer, return "You can adopt [num_pets] pets!"
+# Otherwise, return "That's too many pets for your home."
+###
+
+
+## Define adopt_multiple_pets()
+
+
+
+## Test your function
+adopt_multiple_pets(2) # "You can adopt 2 pets!"
+adopt_multiple_pets(5) # "That's too many pets for your home."
+
+## Test at least 2 more cases
+# adopt_multiple_pets(...)
+```
+
+Of course, with those pets ready to adopt, you consider how you're destined for greatness and intend to move to a mansion very soon. So you decide you'd rather adopt aspirationally based on the number of bedrooms you plan to have in your dream home, which changes with every Zillow refresh.
+
+```{r}
+#| label: adopt-aspirationally
+
+
+### GOAL: 
+# Create a function `adopt_aspirationally` that takes arguments `current_bedrooms` and `future_bedrooms`
+# If `future_bedrooms` is greater than `current_bedrooms`, return "You can adopt [future_bedrooms] additional pets!"
+# Otherwise (if your dream home has the same number or fewer bedrooms than you currently have), return "The [current_bedrooms] pets will do for now."
+###
+
+## Define adopt_aspirationally()
+
+
+
+## Test your function
+adopt_aspirationally(3, 5) #  You can adopt 2 additional pets!
+adopt_aspirationally(3, 2) # The 3 pets will do for now.
+
+## Test at least 2 more cases
+# adopt_aspirationally(...)
+
+```
+
+## Making a List
+
+You make a list of the animals at the shelter you've fallen in love with that you'd like to take home, whether or not you're able to follow through. 
+
+```{r}
+#| label: animal-lists
+
+# Create the vector `animal_list_1`:
+animal_list_1 <- c("cat", "dog", "rabbit", "parrot", "pangolin", "dog", "dog")
+
+# Create a vector `animal_list_2` with at least 5 animals, including at least one cat and one dog
+
+
+
+```
+
+You want to check which animals on your list are allowed (cats and dogs only). Use a loop to go through each animal in your list and print a message for each one.
+
+```{r}
+#| label: check-animals-loop
+
+### GOAL:
+# Without writing a function, create a for loop that goes through each animal in `animal_list_1`
+# For each animal, return TRUE if you can adopt it and FALSE if you cannot
+###
+
+
+
+```
+
+
+
+```{r}
+#| label: check-animal-list
+
+### GOAL:
+# Create a function `check_animal_list` that takes a vector of animals as an argument
+# Inside the function, create a for loop that goes through each animal in the vector
+# For each animal, if it's a cat or dog, print "Great choice. You can adopt this [animal]!"
+# Otherwise, print "The [animal] will find a good home elsewhere."
+###
+
+## Define check_animal_list()
+
+
+
+## Test your function
+check_animal_list(animal_list_1)
+
+# [1] "Great choice. You can adopt this cat!"
+# [1] "Great choice. You can adopt this dog!"
+# [1] "The rabbit will find a good home elsewhere."
+# [1] "The parrot will find a good home elsewhere."
+# [1] "The pangolin will find a good home elsewhere."
+# [1] "Great choice. You can adopt this dog!"
+# [1] "Great choice. You can adopt this dog!"
+
+
+## Create an additional test case with at least 5 different animals
+
+# another_animals_list <- c(...)
+# check_animal_list(...)
+
+```
+
+
+## Getting Fancy: Color and Species
+
+But wait, you forgot about fashion. Now you need two lists: one for animals, one for their colors. You want to print a message for each pair, remembering which species you can adopt and what colors you'll consider.
+
+
+```{r}
+#| label: animal-color-lists
+
+# Create a vector `color_list_1` with at least 5 colors, corresponding to the animals in `animal_list_1`
+color_list_1 <- c("black", "white", "brown", "green", "pink", "black", "golden")
+
+# Create a vector `color_list_2` with at least 5 colors, corresponding to the animals in `animal_list_2`
+
+```
+
+```{r}
+#| label: check-animal-color-lists
+
+### GOAL:
+# Create a function `check_animal_color_lists` that takes two vectors as arguments: `animals` and `colors`
+# Inside the function, create a for loop that goes through each index of the vectors
+# For each index, if the animal is a cat or dog AND the color is black or white, print "You can adopt this [color] [animal]!"
+# Otherwise, print "The [color] [animal] will find a good home elsewhere."
+###
+
+## Define check_animal_color_lists()
+
+
+## Test your function
+check_animal_color_lists(animal_list_1, color_list_1)
+
+# [1] "You can adopt this black cat!"
+# [1] "You can adopt this white dog!"
+# [1] "The brown rabbit will find a good home elsewhere."
+# [1] "The green parrot will find a good home elsewhere."
+# [1] "The pink pangolin will find a good home elsewhere."
+# [1] "You can adopt this black dog!"
+# [1] "The golden dog will find a good home elsewhere."
+
+# Create an additional test case with at least 5 different colors
+# another_color_list <- c(...)
+# check_animal_color_lists(...)
+
+```
+
+
+## Adopting Until You Run Out of Room
+
+You decide to keep adopting pets until you reach your apartment's limit (3 pets). Simulate this using a while loop together with the `check_animal_color_lists` function you wrote earlier.
+
+```{r}
+#| label: adopt-until-full
+
+
+### GOAL:
+# Create a function `adopt_until_full` that takes two vectors as arguments: `animals` and `colors`
+# Inside the function, create an empty vector `adopted` to store the animals you adopt
+
+# Create a variable `max_pets` and set it to 3
+# Create a variable `i` and set it to 1
+# While the length of `adopted` is less than `max_pets` AND `i` is less than or equal to the length of `animals`
+#   If the animal at index `i` is a cat or dog AND the color at
+#   index `i` is black or white, add the animal to the `adopted` vector
+#   Increment `i` by 1
+###
+
+## Define adopt_until_full()
+
+
+
+
+
+## Test your function
+adopt_until_full(animal_list_1, color_list_1) # [1] "cat" "dog" "dog"
+
+## Test your function with your alternative lists of animals and colors
+# adopt_until_full(...)
+
+```
+
+Oh wait, you just remembered you have roommates, and they may not agree with the 1-pet-per-bedroom idea. You need to think about how many of the bedrooms can have a pet and adjust your adoption accordingly, even though you're not sure how many bedrooms will be pet-friendly. Thankfully all your roommates share your commitment to black and white clothes.
+
+```{r}
+#| label: adopt-with-roommates
+
+### GOAL:
+# Create a function `adopt_with_roommates` that takes three arguments: `animals`, `colors`, and `agreeable_roommates`
+# Inside the function, create an empty vector `adopted` to store the animals you adopt
+# Create a variable to determine the maximum number of pets you can adopt based on the number of agreeable roommates (1 pet per agreeable roommate + yourself)
+# Create a variable `i` and set it to 1
+# While the length of `adopted` is less than the maximum number of pets AND
+# `i` is less than or equal to the length of `animals`
+#   If the animal at index `i` is a cat or dog AND the color at
+#   index `i` is black or white, add the animal to the `adopted` vector
+#   Increment `i` by 1
+###
+
+
+## Define adopt_with_roommates()
+
+
+
+## Test your function
+adopt_with_roommates(animal_list_1, color_list_1, 1) # [1] "cat" "dog"
+adopt_with_roommates(animal_list_1, color_list_1, 5) # [1] "cat" "dog" "dog"
+
+## Test your function with your alternative lists of animals and colors, and different numbers of agreeable roommates
+# adopt_with_roommates(...)
+```
+
+
+## The Final Count
+
+From the listed of pets your adopting based on everything you've considered so far, you want a final tally of how many dogs and cats you're going home with. You also want to double check that you didn't accidentally adopt any other animals.
+
+```{r}
+#| label: count-pets
+
+### GOAL:
+# Create a function `count-pets` that takes a vector of adopted animals as an argument
+# Inside the function, create variables `cat_count` and `dog_count` and set them to 0
+# Create a for loop that goes through each animal in the vector
+#   If the animal is a cat, increment `cat_count` by 1
+#   If the animal is a dog, increment `dog_count` by 1
+# Return a list with `cat_count` and `dog_count`
+# Confirm that the sum of `cat_count` and `dog_count` equals the length of the input vector
+# If not, print a warning message "Warning: You have adopted some non-cat/dog animals!"
+###
+
+## Define count_pets()
+
+
+
+```
+
+Considering your species constraints, your fashion sense, your humble abode, your co-habitants, and which animals you fell in love at first sight with, how many of each species are you adopting today?
+
+```{r}
+#| label: final-adoption-count
+
+# Use the `adopt_with_roommates` function to get your final list of adopted animals: final_adopted
+final_adopted <- adopt_with_roommates(animal_list_1, color_list_1, 2)
+
+# Use the `count_pets` function to get the count of cats and dogs: pet_counts
+pet_counts <- count_pets(final_adopted)
+
+
+## Test adopt_with_roommates() and pet_counts using your alternative lists of animals and colors
+
+```
+
+
+## Name Your Pets
+
+It's time to give your new friends names. You've got *plenty* to choose from! From the list of pet names you've been making for years for just this occasion, pick out some names for your cats and dogs. You notice though that as the list has grown over the years, you're no longer a fan of the early ones, so you'll start with recent names and work backwards.
+
+```{r}
+#| label: name-pets
+
+# Create a vector `pet_names_1`:
+
+pet_names_1 <- c("Whiskers", "Buddy", "Shadow", "Luna", "Max", "Bella", "Charlie", "Lucy", "Daisy", "Rocky")
+
+# Create a vector `pet_names_2` with at least 10 names
+
+
+
+### GOAL:
+# Create a function `name_pets` that takes two arguments: `adopted_animals` and `pet_names`
+
+# Inside the function, create an empty vector `named_pets` to store the names of your adopted pets
+# Create a variable `name_index` and set it to the index of the last name in `pet_names`
+# Create a for loop that goes through each animal in `adopted_animals`
+#   If `name_index` is greater than the length of `pet_names` or less than 1, reset it to the index of the last name in `pet_names`
+#   Assign the name at `name_index` in `pet_names` to the animal
+#   Add the name to the `named_pets` vector
+#   Decrement `name_index` by 1
+# Return the `named_pets` vector
+
+###
+
+## Define name_pets()
+
+
+## Test your function
+name_pets(final_adopted, pet_names_1) # [1] "Rocky"   "Daisy"   "Lucy"
+
+## Test your function with different lists of adopted animals and pet names
+# name_pets(...)
+
+
+
+```
+
+
+## Celebrate!
+
+Post an announcement to your social media of choice about your new furry friends! You could optionally inform your roommates first, but that's up to you.
+
+Remember, you don't have to use the exact text below. If you make up your own message, make sure it includes the same information and relies on the functions you've written.
+
+```{r}
+#| label: celebrate-adoption
+
+### GOAL:
+
+# Create a function `celebrate_adoption` uses the functions you've written to send a message like:
+
+# "Exciting news everyone! I've just adopted [cat count] cats and [dog count] dogs from the animal shelter. The [total number of occupants] humans in our house are generously giving up [number of agreeable parties' bedrooms] bedrooms with no regrets. Welcome [list of pet names]!"
+
+# The function should use the functions you've already defined
+# so it will take the arguments needed to run those functions
+# You should only give the function arguments with specific values and vectors
+#   e.g., `animals`, `colors`, `agreeable_roommates`, and `pet_names_1`
+# Do not define your celebrate_adoption to use the results of other functions
+#   e.g., do not use `final_adopted`, `pet_counts`, or `named_pets` as arguments
+
+###
+
+## Define celebrate_adoption()
+
+## Test your function
+celebrate_adoption(animal_list_1, color_list_1, 4, 2, pet_names_1)
+
+# "Exciting news everyone! I've just adopted 1 cats and 2 dogs from the animal shelter. The 5 humans in our house are generously giving up 3 bedrooms with no regrets. Welcome Rocky, Daisy, Lucy!"
+
+## Test your function with different lists of animals, colors, and pet names, and different numbers of roommates and aggreeable roommates
+# celebrate_adoption(...)
+
+```
+
+## Bonus: Edit
+
+Before you hit post you realize your message isn't quite right. You think long and hard about whether it is worth the effort to make sure it uses proper grammar and punctuation, like properly handling singular vs. plural forms of "cat" and "dog" based on the counts, putting an "and" before the last pet name, and using correct spacing before punctuation. 
+
+If you decide it's worth it, update your `celebrate_adoption` function to handle these details.
+
+```{r}
+#| label: celebrate-adoption-bonus
+
+# Create a function `celebrate_adoption_edit` that improves the grammar and punctuation of the message from `celebrate_adoption`
+
+## Define celebrate_adoption_edit()
+
+## Test your function
+celebrate_adoption_edit(animal_list_1, color_list_1, 4, 2, pet_names_1)
+```
+
+## Bonus: Freeform
+
+Earn up to 6 points toward skill objectives by extending this exercise. You might consider adding new functions, expanding existing ones, or introducing new variables or data structures. Be sure to document your additions clearly with comments, and ensure they integrate well with the existing code. 

@@ -2,15 +2,17 @@
 
 **Primary objectives targeted: 1, 2**
 
-Additional suggested objectives: 3, 4, 5
-
 See additional guidelines for demonstrating [Objective 1 (Workflow)](http://d2m-r.github.io/assessment/misc/workflow-assessment.html) and [Objective 2 (Git/GitHub)](http://d2m-r.github.io/assessment/misc/gh-assessment.html) on the course site.
+
+**Recommended additional objectives: 3, 4, 5**
+
+This project is ideal for demonstrating *any* of the core objectives at *any* level, because you have full flexibility over what to include in your repo’s scripts and notebooks. You can incorporate other skills into the structure of this project in whatever way you think makes sense or combine it with elements of other menu projects.
 
 ## Description
 
 In this project, your group will collaboratively create a new "skeleton" GitHub repo. The repo can either be for practicing collaborative GitHub workflows or as a setup for an actual project you're going to work on together (other than your integrative data project).
 
-This project allow for demonstration of advanced collaboration skills including branch management, pull requests, code review, and resolving merge conflicts.
+This project focuses on demonstrating advanced collaboration skills including branch management, pull requests, code review, and resolving merge conflicts.
 
 *Note:* By its very nature, this mini-project cannot be completed with a GitHub Classrooms assignment.
 
@@ -76,7 +78,7 @@ Reminders:
     1. Each group member should make their contributions to the document in their own commit.
 2. Ensure you create a *private* repo. Invite all group members AND all instructors as collaborators with Write+ permissions.
 3. Initiate a `feedback` branch and pull request for instructor grading.
-4. Your work is not submitted until **one group member** has completed the [Submission Form](https://d2m-r.github.io/submit.html) on behalf of the group. Include all group member names in the submission.
+4. Your work is not submitted until **one group member** has completed the [Submission Form](https://www.notion.so/D2M-R-Git-GitHub-29f7b904f28d8082bbaff724b235a539?pvs=21) on behalf of the group. Include all group member names in the submission.
 
 ## Assessment
 
