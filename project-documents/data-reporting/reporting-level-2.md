@@ -4,7 +4,7 @@
 
 Recommended additional objectives: 4, 9-11
 
-*Note: This semi-structured project provides more independence than the structured descriptive statistics exercise. Students select their own research questions and determine appropriate analyses.*
+*Note:* This semi-structured project provides more independence than the structured descriptive statistics exercise. This is a good choice if you already have some experience using R for analysis or visualization and want to show you can put things together in a novel way. If you are newer to analysis and data reporting with R, the structured exercise may be a better choice.
 
 ### Submission
 

@@ -1,37 +1,35 @@
----
-title: "Integrated Data Project Submission"
-format: html
----
+# Core Standards Project Submission
 
-# Data Project Submission Information
+## Submission Information
 
 -   **Student name:**
 -   **GitHub username:**
--   **Data project title:**
--   **Project repo URL:**
--   **Submission attempt (1-3):**
+-   **Assignment name/description:**
 -   **Date of submission:**
 
-# Submission Instructions
+## Submission Instructions
 
 1.  Confirm that all code chunks run as expected and that all .Rmd/.qmd/.md files knit without error.
     -   If you are not able to resolve code errors, disable the code chunks that produce them before submission by adding `eval = FALSE` to the chunk options and add inline comments explaining why the code does not run.
     -   If you are not able to resolve knitting errors, comment out the problematic sections using HTML comments (`<!--` and `-->`) and add inline comments explaining why the section does not knit.
 2. Complete this form, including:
-    1.  Assign numeric scores to any applicable core standards and describe your reasoning. 
-    2.  Optionally, complete the reflection section for enrichment points or describe other ways you believe you have earned enrichment points.
-    3.  Complete the AI use attestation at the end of this document. *Your submission will not be graded without this attestation.*
+    -  Assign numeric scores to any applicable core standards and describe your reasoning. 
+    -  Optionally, complete the reflection section for enrichment points or describe other ways you believe you have earned enrichment points.
+    -  Complete the AI use attestation at the end of this document. *Your submission will not be graded without this attestation.*
 3.  Confirm your repo contains all files needed for grading, including:
-    -   The .qmd file for your data project's manuscript, clearly named
+    -   The .qmd file for this assignment
     -   Any data files needed to run the code
     -   Any knitted output (HTML, PDF, or Word document)
-    -   This completed `data-project-submission.qmd` file
+    -   This completed `core-submission.qmd` file
+    -   Any files required by the assignment instructions
     -   Anything else that your grader will need to fully run and grade your project from a cloned repo
-4.  Commit all changes and push all necessary files to the associated GitHub repo. Refer to the [Guidelines for GitHub Submissions and Assessment](d2m-r.github.io/assessment/misc/gh-submission.html) for more details.
+    -   *Note:* If necessary files are being ignored by your `.gitignore` file, you should add them as exceptions in the .gitignore.
+4.  Commit all changes and push all necessary files to the associated GitHub repo. Refer to the [Guidelines for GitHub Submissions](d2m-r.github.io/assessment/misc/gh-submission.html) for more details.
     -  If submitting in a dedicated repo (i.e., *not* GitHub classrooms):
         -  Confirm the repo contains all necessary files (e.g., .qmd, data files if any, knitted output, a copy of this submission document)
-    -  Is *private* and has been shared with your instructors (professor and TAs) with full collaborator permissions.
-    -  Follow the instructions in the GH submission guidelines to create your `feedback-N` branch and open a pull request
+        -  Confirm the repo is *private*
+        -  Follow the instructions in the GH submission guidelines to create your `feedback` branch and open a pull request
+    -  If submitting via other means, confirm submission formats with your instructor.
 5.  Complete the [Project Submission Form](d2m-r.github.io/submit.html) to submit your work for grading.
     -   **Note:** Pushing your work and adding an issue to GitHub serves to let your grader know which repo and version to grade, but will not add your work to the grading queue. *Your work is not submitted until completing the Project Submission Form!*
     
@@ -45,14 +43,13 @@ Instructions for **student self-evaluation:**
 1.  Review the core standards and decide which ones you have demonstrated in this assignment.
 2.  For each standard you are demonstrating, assign yourself a point value (4, 5, or 6).
 3.  Provide a brief explanation of why you believe you have earned that score.
-    -   Being specific about how you met or exceeded the standard, including the file names and line numbers of relevant code, will help your grader give full credit for your work.
+    -   Some assignments include specific notes about grading for certain standards, which you should be sure to address in your explanations.
+    -   Where an assignment notes that completing the assignment as written earns a certain score, your explanation can be minimal (e.g., "I completed all tasks about functions with error-free code.").
+    -   Where an assignment does not give clear guidance about a standard's scoring, being specific about how you met or exceeded the standard, including the line numbers of relevant code, will help your grader give full credit for your work.
 
 ### Core standards
 
 For each standard you are demonstrating, assign yourself the point value you believe you have earned. Refer to the course website for more details on each standard. If you are not attempting to demonstrate a particular standard, leave it blank.
-
-**Note:** For the integrative data project, each core standard is worth 1 point (out of 20), regardless of the level achieved (4, 5, or 6), but it is still in your best interest to aim for higher levels of demonstration and evaluate yourself accordingly.
-"Above and beyond" demonstrations of core standards or exceptional quality may receive bonus points at the grader's discretion, but the project cannot contribute more than 20 points to the final grade.
 
 | Points | Label | Description |
 |------------------------|------------------------|------------------------|

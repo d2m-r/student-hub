@@ -1,16 +1,13 @@
----
-title: "Enrichment Project Submission"
-format: html
----
+# Enrichment Project Submission
 
-# Submission Information
+## Submission Information
 
 -   **Student name:**
 -   **GitHub username:**
 -   **Assignment name/description:**
 -   **Date of submission:**
 
-# Submission Instructions
+## Submission Instructions
 
 If your enrichment project includes components that cannot reasonably be submitted as part of a GitHub repository (for example, large data files, interactive web apps), please confirm with your instructor about how to submit those components.
 

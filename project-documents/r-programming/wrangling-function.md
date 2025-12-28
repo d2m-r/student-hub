@@ -1,4 +1,4 @@
-## Core project: R Programming | Create a wrangling function
+# Core project: R Programming | Create a wrangling function
 
 **Primary core objectives targeted: 3, 4, 5, 7, 9**
 
@@ -10,7 +10,7 @@ This project must be completed **individually**.
 
 Completing through the GitHub Classroom assignment is recommended. Alternatively, you may choose to create a dedicated repo within the D2M-R organization.
 
-Detailed submission instructions are included in the `core-submission.qmd` document and the [GitHub Submissions Guidelines](http://d2m-r.github.io/assessment/misc/gh-submissions.html).
+Detailed submission instructions are included in the `core-submission.md` document and the [GitHub Submissions Guidelines](http://d2m-r.github.io/assessment/misc/gh-submissions.html).
 
 **Reminder:** Your work is not submitted until you have completed the [Submission Form](http://d2m-r.github.io/submit.html).
 

@@ -10,17 +10,17 @@ This project is ideal for demonstrating *any* of the core objectives at *any* le
 
 ## Description
 
-In this project, you will create a new “skeleton” GitHub repo. The repo can either be just to practice organizing and working in GitHub or as a setup for an actual project you’re going to work on (other than your integrative data project). 
+In this project, you will create a new "skeleton" GitHub repo. The repo can either be just to practice organizing and working in GitHub or as a setup for an actual project you’re going to work on (other than your integrative data project). 
 
 By its very nature, this mini-project cannot be completed with a GitHub Classrooms assignment.
 
-This project must be completed **individually**. You may additionally or alternatively complete the similar group assignment titled “Collaborative Repo.”
+This project must be completed **individually**. You may additionally or alternatively complete the similar group assignment titled "Collaborative Repo."
 
 ## Instructions
 
 1. In the method of your choosing, create a github repo connected to an R Project. Both the repo and project should be created for this project, though you can set it up planning ahead to use it as a functional repo beyond this submission.
     1. You may create the repo in the D2M-R organization or as a private repo. Working in the D2M-R org is recommended in most cases, but if this is the start of a project you intend to continue beyond the class you should create the repo through your account outside the class org.
-2. In your local repository (i.e., your R Project), create a “skeleton” for the real or imagined research project. The skeleton should include all files and/or directories required for any repository and should *not* include files and/or directories that should not be stored or shared remotely. Create and organize  files and directories that may not be required in all repositories, but are either necessary or useful in this repo.
+2. In your local repository (i.e., your R Project), create a "skeleton" for the real or imagined research project. The skeleton should include all files and/or directories required for any repository and should *not* include files and/or directories that should not be stored or shared remotely. Create and organize  files and directories that may not be required in all repositories, but are either necessary or useful in this repo.
     1. Refer to the Git/GitHub slides for information about required and recommended elements of a repo.
 3. As you work, use git best practices for version control, including frequent, informative commit messages. In the file(s) created for the purpose of documentation, keep descriptions, file trees, and any other information up-to-date.
 
@@ -28,7 +28,7 @@ If you use this just for practice (vs. prepping for a real, planned project), yo
 
 *Note:* If you are following the instructions as written and committing/pushing frequently, there’s a good chance you’ll come across an issue where your local and remote repos don’t seem to sync perfectly as you’d expect. If you encounter this issue, it’s your responsibility to identify what is going on and address it. 
 
-While there’s always a chance you’re dealing with something actually going wrong, there are some things you’re likely to encounter that aren’t bugs, they’re features! “Solving” the problem isn’t fixing a bug, it’s adapting your work to function the way you want it to within the system.
+While there’s always a chance you’re dealing with something actually going wrong, there are some things you’re likely to encounter that aren’t bugs, they’re features! "Solving" the problem isn’t fixing a bug, it’s adapting your work to function the way you want it to within the system.
 
 ### Challenge suggestions
 

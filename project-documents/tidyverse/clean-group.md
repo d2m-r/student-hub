@@ -1,4 +1,4 @@
-## Core project: Data cleaning | Make-a-mess (group)
+# Core project: Data cleaning | Make-a-mess/uncleaning (group)
 
 **Primary core objectives targeted: 1-8**
 
@@ -6,9 +6,9 @@ Recommended additional objectives: 9-11
 
 *Note: Some projects that center on dataset manipulation share similarity in structure. There is considerable overlap in the instructions across some mini-projects, but there are also important differences. Please read carefully.*
 
-### Submission
+## Submission
 
-Detailed submission instructions are included in the `core-group-submission.qmd` document and the [GitHub Submissions Guidelines](http://d2m-r.github.io/assessment/misc/gh-submissions.html).
+Detailed submission instructions are included in the `core-group-submission.md` document and the [GitHub Submissions Guidelines](http://d2m-r.github.io/assessment/misc/gh-submissions.html).
 
 **Option 1 (Recommended): Dedicated repo in the D2M-R organization**
 
@@ -16,7 +16,7 @@ Detailed submission instructions are included in the `core-group-submission.qmd`
 2. All group members clone the repository to their local machines.
 3. Each group member should make their contributions to the document in their own branches.
     1. Recommended: In addition to working in their own branches, each group member should create a dedicated subdirectory for their data and initial code.
-4. Copy the `core-group-submission.qmd` doc from `student-hub/templates` into the top level of your repo and complete in full.
+4. Copy the `core-group-submission.md` doc from `student-hub/templates` into the top level of your repo and complete in full.
 5. Initiate a `feedback` branch and pull request for instructor grading.
 
 **Option 2: GitHub Classroom Assignment**
@@ -25,7 +25,7 @@ Detailed submission instructions are included in the `core-group-submission.qmd`
 2. All other group members join the team through the assignment link.
 3. Each group member should make their contributions to the document in their own branches.
     1. Recommended: In addition to working in their own branches, each group member should create a dedicated subdirectory for their data and initial code.
-4. Complete the `core-group-submission.qmd` doc in the top level of your repo.
+4. Complete the `core-group-submission.md` doc in the top level of your repo.
 5. Comment on the auto-generated `feedback` branch’s pull request when ready for grading.
 
 **For either option:**
@@ -75,7 +75,7 @@ To make things trickier, show more skills, or earn engagement points, try one or
 Your repository should include (presented here in the order you will probably create each):
 
 1. this README
-2. a `core-group-submission.qmd` file with contributions from all group members
+2. a `core-group-submission.md` file with contributions from all group members
 3. subdirectories for each group member including:
     1. Optional: .csv of the clean data you started with, if applicable (i.e., only needed if it was not a built-in dataset)
     2. script or notebook that un-cleans your data (removed from the .gitignore if it was added)

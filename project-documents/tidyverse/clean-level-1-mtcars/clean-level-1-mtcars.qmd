@@ -6,9 +6,9 @@ title: 'Level 1 Data Cleaning: Clean the mtcars Dataset'
 
 The objective of this assignment is to practice cleaning and transforming a messy dataset using tidyverse functions. You will use skills like renaming and reordering columns, sorting rows, changing data types, mutating data, and using the stringr and forcats packages.
 
-In this Level 1 Cleaning assignment, you will work with a simple dataset and focus on basic data cleaning tasks. Most tasks are outlined in the assignment script. You may want to review the [Data Cleaning Walkthrough]() before you begin.
+In this Level 1 Cleaning assignment, you will work with a simple dataset and focus on basic data cleaning tasks. Most tasks are outlined in the assignment script. You may want to review the Data Cleaning Walkthrough in the `student-hub` repo before you begin.
 
-You may additionally or alternatively complete the [Level 2 Data Cleaning assignment](). In Level 2, you will work with a more complex dataset and perform additional cleaning tasks with less direct instruction. The Level 2 assignment has more opportunities to demonstrating course standards at higher levels than this Level 1 assignment and is recommended for those who are already comfortable with the tasks in this assignment.
+You may additionally or alternatively complete the [Level 2 Data Cleaning assignment](../clean-level-2-midwest/clean-level-2-midwest.qmd). In Level 2, you will work with a more complex dataset and perform additional cleaning tasks with less direct instruction. The Level 2 assignment has more opportunities to demonstrating course standards at higher levels than this Level 1 assignment and is recommended for those who are already comfortable with the tasks in this assignment.
 
 # Instructions
 

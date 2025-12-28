@@ -1,17 +1,14 @@
----
-title: "Core Standards Project Submission"
-format: html
----
+# Core Standards Project Submission
 
-# Submission Information
+## Submission Information
 
 -   **Student names and GitHub usernames:**
-    - *Name, username*
+    - Name, username
     - ...
 -   **Assignment name/description:**
 -   **Date of submission:**
 
-# Submission Instructions
+## Submission Instructions
 
 1.  Confirm that all code chunks run as expected and that all .Rmd/.qmd/.md files knit without error.
     -   If you are not able to resolve code errors, disable the code chunks that produce them before submission by adding `eval = FALSE` to the chunk options and add inline comments explaining why the code does not run.
