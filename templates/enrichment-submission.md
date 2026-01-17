@@ -19,7 +19,7 @@ Minimally, the repo should include this submission document and a README.md file
     -   If you are not able to resolve knitting errors, comment out the problematic sections using HTML comments (`<!--` and `-->`) and add inline comments explaining why the section does not knit.
 2.  Create a README.md file in the top level of your repo that includes:
     -   A brief description of your project, including its goals and any relevant context
-    -   Instructions for how to run any code in the repo, including any necessary setup steps. This can be as simple as "render `example-notebook.qmd` to html`, but may need to include extra specification, like installing packages, downloading data files, accessing an external website or API, etc.
+    -   Instructions for how to run any code in the repo, including any necessary setup steps. This can be as simple as "render `example-notebook.qmd` to html", but may need to include extra specification, like installing packages, downloading data files, accessing an external website or API, etc.
     -   A repo structure overview, explaining what files are included and where to find key components
     -   Any other information your grader will need to understand and evaluate your project
 2. Complete this form, including:
@@ -30,7 +30,7 @@ Minimally, the repo should include this submission document and a README.md file
     -   The README.md file with overview and links to any components outside the repo
     -   Any files needed to run the code (data, scripts, notebooks)
     -   Any knitted output (HTML, PDF, or Word document)
-    -   This completed `enrichment-submission.qmd` file
+    -   This completed `enrichment-submission.md` file
     -   Anything else that your grader will need to fully run and grade your project from a cloned repo
     -   *Note:* If necessary files are being ignored by your `.gitignore` file, you should add them as exceptions in the .gitignore.
 4.  Commit all changes and push all necessary files to the associated GitHub repo. Refer to the [Guidelines for GitHub Submissions](d2m-r.github.io/assessment/misc/gh-submission.html) for more details.
@@ -44,6 +44,20 @@ Minimally, the repo should include this submission document and a README.md file
     
 Graders will refer to your self-evaluation in this document in reviewing your work, leaving feedback, and assigning grades.
 Grades and comments (if applicable) will be shared with you via the pull request.
+    
+### Combining Core Skills and Enrichment
+    
+If you are submitting a single project to earn both core standards points and enrichment points *at the same time*:
+
+1. Include both submission documents in the top level of your repo.  
+2. You can use the same `feedback` branch and pull request for both.
+3. You only need to submit to the grading queue once. Select the option for combined project.
+
+If you are adding onto a previously submitted core project:
+
+1. Add the enrichment submission doc to your repo
+2. Create a new pull request on the existing feedback branch
+3. Submit again to the grading queue. Select the option for enrichment (not combined) project.
 
 
 ## Enrichment Self-evaluation

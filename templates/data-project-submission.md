@@ -23,7 +23,7 @@
     -   The .qmd file for your data project's manuscript, clearly named
     -   Any data files needed to run the code
     -   Any knitted output (HTML, PDF, or Word document)
-    -   This completed `data-project-submission.qmd` file
+    -   This completed `data-project-submission.md` file
     -   Anything else that your grader will need to fully run and grade your project from a cloned repo
 4.  Commit all changes and push all necessary files to the associated GitHub repo. Refer to the [Guidelines for GitHub Submissions and Assessment](d2m-r.github.io/assessment/misc/gh-submission.html) for more details.
     -  If submitting in a dedicated repo (i.e., *not* GitHub classrooms):

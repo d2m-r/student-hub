@@ -23,7 +23,7 @@
     -   The .qmd file for this assignment
     -   Any data files needed to run the code
     -   Any knitted output (HTML, PDF, or Word document)
-    -   This completed `core-group-submission.qmd` file
+    -   This completed `core-group-submission.md` file
     -   Any files required by the assignment instructions
     -   Anything else that your grader will need to fully run and grade your project from a cloned repo
     -   *Note:* If necessary files are being ignored by your `.gitignore` file, you should add them as exceptions in the .gitignore.
