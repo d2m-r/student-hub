@@ -1,0 +1,159 @@
+---
+title: "Packages and Dependencies"
+---
+
+## Installing, attaching, and loading packages
+
+In [Chapter 6](https://d2m-r.github.io/book/chapters/packages.html), we learned:
+
+- What R packages/libraries are for
+- How to install packages from CRAN using `install.packages()`
+- How to attach packages using `library()`
+- How to load functions from packages using `::` syntax
+- The difference between attaching and loading packages
+- What dependencies are and how to manage them
+
+In this exercise, we'll walk through installing the `devtools` package, which is a package for making packages, and accessing its functions. 
+We'll also look at how to manage dependencies, including the difference between "depends", "imports", and "suggests".
+
+
+### Getting Started
+
+First we should learn some basics about the `devtools` package.
+We can use RStudio's built-in help tools to get started.
+In the Help pane, search for "devtools" to find the package documentation.
+
+You can also access the package documentation directly from the console using `help.searcch()` or `??`:
+
+```r
+help.search("devtools")
+??devtools
+```
+
+Why not use `help()` or the single `?` operator instead? These functions (which are aliases for each other) search for the exact name of something in your current R session, while `help.search()` and `??` search for the term in all help files, including package documentation.
+
+You can use `?` to look up something specific that already exists in your R session, like a function from an attached package or the attached package itself. In this case, `devtools` is not yet loaded (attached), so `?devtools` will return an error. It can't find the help page because it doesn't exist where it's looking. Using `??` instead will expand the search to all help files, including those in packages that are not currently attached or even installed.
+
+Whether you search the pane or use the console, you'll be brought to a list of matches in the packages pane.^[Unless you already have `devtools` loaded, in which case you'll be brought to the package documentation directly since it knows exactly what you're looking for.] 
+Browse the list of help pages and click on the one for `devtools::devtools-package` to see the package documentation.
+
+![devtools Help Page](../images/screenshots/devtools-help-page.png)
+
+This page will give you a simple overview of the package, alone with some helpful links to the package's GitHub repository and its website. 
+At the very bottom you'll find a link to the package's version index and [CRAN page](https://cloud.r-project.org/web/packages/devtools/index.html), which contains more detailed information about the package, including its dependencies and reverse dependencies.
+
+### Dependencies
+
+Recall from @sec-dependencies that R packages are built using functions from other R packages.
+When functions from one package require functions from another package in order to work, we say that the first package has a "dependency" on the second package. Recall also that dependencies come in three flavors: "depends", "imports", and "suggests".
+
+The CRAN site for `devtools` lists its dependencies at the top of the page:
+
+![devtools Dependencies](../images/screenshots/devtools-dependencies.png)
+
+Let's try installing and then loading the devtools package to see what's going on here.
+
+Start with a fresh R session by restarting R in RStudio (Session \> Restart R). Take a look at your packages pane. Check to see whether any of the following packages are already in your list of installed packages:
+
+-   `devtools`
+-   `usethis`
+-   `memoise`
+-   `roxygen2`
+-   `foghorn`
+-   `spelling`
+
+Since you have already set up RStudio to work with GitHub[^r-language-basics-2], you should have some of these packages installed already. You probably won't have all of them installed, but if you do, take a look at the full list of Imports and Suggests from the [`devtools` package documentation](https://cloud.r-project.org/web/packages/devtools/index.html) and try to find some you're missing.
+
+[^r-language-basics-2]: You did set up RStudio to work with GitHub, didn't you?
+
+If you started from a new R session, any of these packages that you do have installed should not be attached to your environment. That means that even if you see the package name listed in the packages pane, it should not be checked. Assuming you do have at least one of these packages installed, see what happens when you try to use functions from it before attaching it.
+
+For example, try running the `edit_r_profile()` function from `usethis`:
+
+``` r
+edit_r_profile()
+```
+
+Since `usethis` isn't currently attached, R doesn't know what it should be referencing when it sees this function. You should get an error message like:
+
+`Error in edit_r_profile() : could not find function "edit_r_profile"`
+
+But as long as you have `usethis` installed, you *can* use functions from it even without them in your environment. You *load* a function from an unattached package with `::` syntax, like this:
+
+``` r
+usethis::edit_r_profile()
+```
+
+Provided you have `usethis` installed, this should open up a (probably empty) text document called `.Rprofile`.
+
+This difference between running functions from attached packages and running functions from installed but unattached packages is key to the difference between the two kinds of required dependencies. Basically, "depends" require an attached package, while "imports" only require an installed package.
+
+Let's try it out with `devtools`. It doesn't matter if you have `devtools` installed or not, but if you do, make sure it is not attached (i.e. it's not check in the packages pane). Install (or reinstall/update) the package with the following console command:
+
+``` r
+install.packages("devtools")
+```
+
+The `devtools` packages *depends* on base R and the [`usethis` package](https://cloud.r-project.org/web/packages/usethis/index.html). In order for functions from `devtools` to work, you need to have `usethis` installed on your system, so the installation process for `devtools` will also install `usethis` if it is not already installed.
+
+| In your packages pane, check to see whether `devtools` and `usethis` are now listed (they should be) and checked off (they shouldn't be).
+
+The `devtools` package *imports* a number of packages, including `cli`, `memoise`, `roxygen2`, and more. Like the `usethis` depend, these packages are required for `devtools` to work. Like with `usethis`, these will be installed automatically if they are not already installed on your system.
+
+| In your packages pane, check to see whether `cli`, `memoise`, or any other `devtools` imports you didn't have installed already are now listed (they should be) and checked off (they shouldn't be).
+
+The last kind of "dependency" is a soft one: `devtools` *suggests* a number of packages, including `covr`, `foghorn`, and `spelling`. These packages are not required for `devtools` to work, just recommended.
+
+| In your packages pane, check to see whether `covr`, `foghorn`, or any other `devtools` suggestions you didn't have installed already are now listed and checked off (they shouldn't be either).
+
+Now that `devtools` and its required dependencies (depends and imports) are installed, let's load our new package:
+
+``` r
+library(devtools)
+```
+
+This attaches the named package (`devtools`) and its "depends", but not the "imports" or "suggests". You can see this in the packages pane. `devtools` and `usethis` should be checked, but `cli`, `memoise`, `foghorn`, and any other imports or suggests should not be checked.
+
+Now we can use functions from `devtools` and `usethis` without needing to use the `::` syntax. For example, we can run the `edit_r_profile()` function again:
+
+``` r
+edit_r_profile()
+```
+
+It should open up your `.Rprofile` text file, the same way it did with the `::` syntax before. (You can still use the `::` syntax even when it's attached if you want.)
+
+Attaching `devtools` did *not* attach the import and suggest dependencies. See what this means using a simple function from the `sessioninfo` package, which was installed as a `devtools` import. Try running the `session_info()` function both with and without `::` syntax:
+
+``` r
+os_name() # returns an error
+sessioninfo::os_name() # returns the name of your operating system
+```
+
+The `::` syntax is letting you *load* functions without *attaching* them, but you can't load a function that isn't installed. The `devtools` suggested package `foghorn` was not automatically included in installation, and you probably don't already have it installed yourself, so let's try a simple function from that package:
+
+```r
+cran_results(pkg = "devtools") # returns an error
+foghorn::cran_results(pkg = "devtools") # also returns an error
+```
+
+If you wanted to get a summary of errors, warnings, and other issues associated with the `devtools` package on CRAN, you would need to install the `foghorn` package first, then either attach it or load it with `::`.
+
+### Reverse Dependencies
+
+The `devtools` package documentation also lists its reverse dependencies, which you can probably guess are packages that depend on `devtools` in some way. Just like `devtools` has both depends and imports, it also has "reverse depends" and "reverse imports".
+
+![devtools Reverse Dependencies](../images/screenshots/devtools-reverse-dependencies.png)
+
+You can click on any dependency or reverse dependency to view the CRAN documentation for that package.
+To finish off this exercise, try exploring a chain of dependencies and reverse dependencies.
+The same way you might use the "citations" and "cited by" tools on Google Scholar and similar literature search tools, you can use the "reverse dependencies" and "dependencies" links on CRAN to explore the relationships between packages.
+What package can you find with the most or least dependencies? Reverse dependencies?
+Can you find packages that have no dependencies at all?
+From your daisy chain exploration, can you identify any packages that you think are likely particularly useful or popular?
+
+
+
+
+
+
+
