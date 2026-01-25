@@ -60,6 +60,10 @@ rsconnect/
 *.png
 *.gif
 
+# Temporary files
+
+_TEMP_*
+
 # Ignore exceptions
 ## Negate "ignore" for specific things that meet ignore patterns
 ## Anything in the output and assets folders will NOT be ignored
