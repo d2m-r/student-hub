@@ -194,6 +194,47 @@ glasses.unite <- glasses.sep %>%
 
 ## Missing data
 
+# Create example tibble: daily temperature readings with gaps
+weather <- tibble(
+  date = as.Date(c("2026-01-20", "2026-01-21", "2026-01-21", "2026-01-23", "2026-01-24")),
+  station = c("North", "North", "South", "South", "North"),
+  temp_max = c(32, NA, 28, 30, NA),
+  temp_min = c(18, 15, NA, 20, 17),
+  notes = c("Clear", NA, "Windy", NA, "Cloudy")
+)
+
+weather
+
+
+# expand() - Create NEW tibble with all combinations
+# Note: Only date and station columns - original data dropped!
+weather |> 
+  expand(date, station)
+
+
+# complete() - ADD missing combinations to existing data
+# Note: All original columns retained, NAs for new rows
+weather |> 
+  complete(date, station)
+
+
+# Drop rows with ANY NA
+weather |> drop_na()
+
+# Fill down (use previous non-NA value)
+weather |> fill(notes)
+
+# Fill up (use next non-NA value)
+weather |> fill(temp_max, .direction = "up")
+
+# Replace NAs with specific values
+weather |> 
+  replace_na(list(
+    temp_max = 999,
+    temp_min = 999,
+    notes = "No notes"
+  ))
+
 # ?Q? What's actually missing in this missingdata tibble?
 missingdata <- tibble(
     condition = c(1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2),
