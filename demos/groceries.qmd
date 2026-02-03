@@ -64,7 +64,7 @@ shop <- function(eggs) { # do they have eggs? T/F
   paste0("Here's the milk. I bought ", n_milk, ".")
 } 
 
-shop(TRUE) # Run the function by setting the one and only argument (eggs) to either TRUE or FALSE
+shop(FALSE) # Run the function by setting the one and only argument (eggs) to either TRUE or FALSE
 
 
 ```
@@ -102,7 +102,7 @@ If we want to add this clarification here, the plain English version of the requ
 
 # Before we make a function, we write some code that works with pre-defined arguments
 
-milk <- TRUE # Whether there was milk in the store
+milk <- FALSE # Whether there was milk in the store
 eggs <- TRUE # Whether there were eggs in the store
 
 if (milk == TRUE & eggs == TRUE) { # If there’s milk AND eggs

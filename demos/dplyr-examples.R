@@ -2,6 +2,10 @@
 ############# WEEK 4 : DPLYR #################
 ##############################################
 
+# Read in the mmdata from the readr practice demo if it's not loaded
+# library(readxl)
+# mmdata <- read_excel("data/MM Data.xlsx", skip = 1)
+
 ## dplyr functions
 
 # filter()

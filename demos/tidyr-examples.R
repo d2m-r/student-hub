@@ -124,8 +124,8 @@ left_join(rename.band_members, band_instruments,
 ### TIDYR ###
 
 
-# Read in the mmdata from above if it's not loaded!
-# mmdata <- read_csv("00_in-class-materials/data/mmdata-ND.csv")
+# Read in the mmdata from the readr practice and/or dplyr demo if it's not loaded
+# mmdata <- read_excel("data/MM Data.xlsx", skip = 1)
 
 
 ## Pivot wide and long
