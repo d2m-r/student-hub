@@ -60,9 +60,10 @@ rsconnect/
 *.png
 *.gif
 
-# Temporary files
+# Temporary & local files
 
 _TEMP_*
+localonly/
 
 # Ignore exceptions
 ## Negate "ignore" for specific things that meet ignore patterns
