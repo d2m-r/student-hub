@@ -1,0 +1,429 @@
+---
+title: "Strings Activity: Cleaning Messy Research Data"
+format: html
+---
+
+```{r}
+#| label: setup
+
+library(tidyverse)
+```
+
+
+## The Scenario
+
+You've inherited a dataset from a collaborator who was studying trends in psychology research publication. The dataset includes demographic information about each participating psychologist, their most recent citations, and their open-ended responses about their research interests. 
+
+Data are stored in three messy and inconsistent character vectors. Your task is to clean and standardize this data using `stringr` functions and regular expressions.
+
+## Variable 1: Author Citations
+
+A first variable (`citations`) contains the participant's most recent first-author publication citations (if they have one) in APA style.
+
+This vector of author citations is messy, but has some consistent patterns we can use to extract information with regular expressions.
+
+```{r}
+#| label: citations-df
+# Messy author citations from different formatting styles
+citations <- c(
+    "Winger, J. (2020). Early number formation with minimum scaffolding.",
+    NA,
+    "Duncan, I., & Whitman, E. (2021). Comparative neuroimaging methodology in attention research.",
+    "Hawthorne,    P.C.   , & Edison, A. (2018). Pointing    and shrugging in 3-yr olds.",
+    "Perry, B. (2022). Impact of CBT and DBT interventions in generalized anxiety patients.",
+    "Chang, B.K., Bennett, S., & Bennett, A.(2020). Prefrontal cortex development affects adolescent decision-making.",
+    "Pelton, C.(2017). Children's social cognition: A review of recent findings.",
+    NA,
+    "Nadir, A.G., & Barnes, T.   (2020). Ethical considerations in false memory creation research.",
+    "Dart, F., Hickey, B., Patashnik, E., Slater, M., Kim, A., & Austin, B. (2021). Sign language acquisition in bilingual hearing toddlers."
+)
+
+citations
+
+```
+
+
+### Task 1: Counting Authors
+
+**Task:** How many authors does each paper have? Create a new vector called `num_authors` with the count.
+
+```{r}
+#| label: count-authors
+# Single author: 1, Two authors: 2, etc.
+
+
+
+```
+
+
+### Task 2: Extracting Years
+
+**Task:** Extract the publication year from each citation in a new vector called `citation_year`.
+
+```{r}
+#| label: extract-years
+
+
+
+```
+
+
+### Task 3: Extracting Last Names
+
+**Task:** Extract just the first author's last name[^so much for participant anonymity...] from each citation in a new vector called `corresponding_last_name`. 
+
+```{r}
+#| label: extract-last-names
+# Smith, J. (2020)... → "Smith"
+
+
+
+```
+
+
+### Task 4: Reformatting Citations
+
+**Task:** Reformat citations to "LastName (Year)" format for the first corresponding author only.
+If there is more than one author, append "; +N" where N is the number of additional authors.
+
+```{r}
+#| label: reformat-citations
+# "Smith, J. (2020). Title..." → "Smith (2020)""
+# "Lee, S., & Park, K. (2021)..." → "Lee (2021); +1"
+
+
+```
+
+### Task 5: Handle Missing Values
+
+If you view your `cleaned_citations`, you'll notice that the NA values from the original citations vector are not handled properly.
+
+**Task:** Correct the `cleaned_citations` vector so that any NA in the original `citations` vector results in an NA in the cleaned version as well. 
+
+```{r}
+#| label: handle-missing-citations
+
+
+```
+
+
+**Challenge task:** Identify where in the cleaning process the `NA`s are being handled incorrectly. 
+Revise the code for that step using control flow to ensure correct handling of missing data at that stage instead of fixing it after the fact.
+
+### Cleaned Citations
+
+View your cleaned citations after applying the transformations above:
+
+```{r}
+#| label: view-cleaned-citations
+
+
+
+```
+
+
+## Variable 2: Participant Open Responses
+
+The second variable (`responses`) contains open-ended participant responses about their research interests. Response input was freeform, so there is little consistency.
+
+```{r}
+#| label: responses-df
+# Messy participant responses about research interests
+
+responses <- c(
+    "  I'm interested in COGNITIVE development   ",
+    "social Attachment, relationships and memory",
+    "I study    memory & attention ",
+    "Dev.psych (early childhood)",
+    "CLINICAL psychology, especially anxiety from device-use",
+    "  neuroscience of memmory-making",
+    "I'm interested in social cognition and stereotyping in kids.",
+    "Child development & learning",
+    "Memory, specifically false memories",
+    "multi-modal multi-lingualism (Am. english/ASL vs. French/LSF)"
+)
+
+responses
+```
+
+
+
+### Task 6: Basic Cleaning
+
+**Task:** Clean up the whitespace and standardize the case in a new vector called `cleaned_responses`. 
+
+```{r}
+#| label: clean-responses
+
+
+
+```
+
+
+### Task 7: Pattern Detection
+
+**Task:** Which responses mention "memory" (case-insensitive)? Create a logical vector or subset of strings mentioning memory in a new vector called `has_memory`.
+
+```{r}
+#| label: detect-memory
+
+
+
+```
+
+
+### Task 8: Standardizing Terms
+
+**Task:** Replace all variations of "psych" and "psychology" with the full word "psychology".
+
+```{r}
+#| label: standardize-psych
+
+
+    
+```
+
+
+### Task 9: Extracting Keywords
+
+**Task:** For responses containing "&" or "and", extract just the FIRST topic mentioned (the word before the connector). 
+
+```{r}
+#| label: extract-first-topic
+# Example: "Interested in memory & attention" → "memory"
+
+
+
+```
+
+### Cleaned Responses
+
+View your the three vectors you created after applying the transformations above:
+
+```{r}
+#| label: view-cleaned-responses
+
+
+
+```
+
+
+## Variable 3: Participant IDs
+
+The third and final variable is participant `ids`. These are supposed to be in the format "SITE_education_NUMBER" where every site has a 3-letter code and every participant has a 3-digit number, but there are many inconsistencies and errors in the data entry.
+
+```{r}
+#| label: participant-ids
+# Participant IDs with embedded information
+# Format: SITE_CONDITION_PARTICIPANTNUM
+# But some are malformed...
+ids <- c(
+    "NYC_MA_001",
+    "CHI_phd_045",
+    "NYC_Ma_x12",
+    "LA_ma_7", 
+    "chi_PhD_099",
+    "NYC__PHD_023",
+    "BOSTON_MA_5",
+    "Austin_BA_100",
+    "LA_MA_x123",
+    "SF_PhD_01"
+)
+
+ids
+```
+
+
+
+
+### Task 10: Standardize Site Codes
+
+**Task:** Make all site codes exactly 3 uppercase letters in a new vector called `city_codes`. 
+
+```{r}
+#| label: std-site-codes
+
+# "NYC" -> "NYC"
+# "BOSTON" -> "BOS" # trim to 3 characters
+# "LA" -> "LAX" # pad with X to make exactly 3 characters
+# "Austin" -> "AUS" # trim & uppercase
+
+
+
+
+
+```
+
+
+
+### Task 11: Fix Participant Numbers
+
+**Task:** Ensure all participant numbers are exactly 3 digits with leading zeros in a new vector called `participant_nums`.
+
+```{r}
+#| label: fix-participant-nums
+# "7" → "007"
+# "45" → "045"
+
+
+
+```
+
+
+### Task 12: Build Clean IDs
+
+**Task:** Reconstruct clean IDs in a new vector `cleaned_ids` in the format "SITE_condition_NUM" where:
+
+- `SITE` is 3 uppercase letters
+- `education` is lowercase
+- `NUM` is 3 digits with leading zeros
+
+```{r}
+#| label: build-clean-ids
+
+
+
+```
+
+### Cleaned IDs
+
+View your cleaned IDs after applying the transformations above:
+
+```{r}
+#| label: view-cleaned-ids
+
+
+```
+
+## Bonus: Create & Wrangle Tibble
+
+You've been working with character vectors, but typically you'll have this data in a tibble. 
+Create a tibble with the original `responses`, `citations`, and `ids` as columns, then apply your cleaning steps to create new columns with the cleaned data.
+
+### Bonus Task 1: Create Cleaned Tibble
+
+**Task:** Create a tibble with the cleaned data called `cleaned_df` that has columns for `responses`, `citations`, and `ids`. Sort your tibble's rows by the `ids` column in ascending order.
+
+```{r}
+#| label: create-tibble-original
+
+# Use the tibble() function to create a tibble with columns using the cleaned data vectors:
+# - responses
+# - citations
+# - ids
+
+
+
+
+```
+
+
+
+### Bonus Task 2: Create Responses Tibble
+
+
+**Task:** Create a second tibble called `responses_df` with the cleaned responses and the two additional vectors you created (`has_memory` and `first_topic`) as columns. Sort the `responses_df` tibble first by `has_memory` and then alphabetically by the `cleaned_responses` column.
+
+```{r}
+#| label: create-tibble-responses
+
+
+```
+
+### Bonus Task 3: Create Citations Tibble
+
+**Task:** Create a third tibble called `citations_df` with the cleaned `author_id` `citations`, total `author_count`, and `year` as columns. Sort your rows by publication year, newest to oldest.
+
+```{r}
+#| label: create-tibble-citations
+
+
+
+```
+
+
+
+
+### Bonus Task 4: Join Tibbles
+
+View your three tibbles. Take note of which columns are shared between tables and what the column names are.
+
+```{r}
+#| label: view-tibbles
+
+
+```
+
+
+**Task:** Join the `cleaned_df` and `responses_df` tibbles together into a single tibble called `data_df`. Then join the resulting joined tibble with the `citations_df` tibble to create a final tibble with all the cleaned data.
+
+```{r}
+#| label: join-tibbles
+
+
+```
+
+
+
+### View Joined Tibble
+
+```{r}
+#| label: view-joined-tibble
+
+
+```
+
+### Bonus Task 5: Topic Wrangling
+
+**Task:** Use `mutate()` to standardize the `first_topic` column. Be sure to inspect your data first to confirm you are capturing *all* and *only* the rows you want to change.
+
+1. Make lowercase
+2. Identify any responses suggesting memory research and replace the `first_topic` with "memory" for those rows
+3. Identify any responses suggesting developmental psychology research and replace the `first_topic` with "developmental" for those rows
+4. Replace remaining missing values with "other".
+
+```{r}
+#| label: mutate-first-topic
+
+
+
+
+```
+
+### Bonus Task 6: Separate IDs
+
+The ID column is not tidy, because it combines 3 pieces of discrete information into one column. 
+
+**Task:** Split the `ids` column into three new columns: `site`, `education`, and `participant_num`, then move them to the beginning of the tibble.
+
+```{r}
+#| label: separate-ids
+
+
+
+
+```
+
+### Bonus Task 7: Create Factors
+
+**Task:** Decide which of your existing variables are categorical and should be treated as *factors* rather than character or numeric data. Use the `factor()` function to convert those variables to factors in an argument (`factor(my_variable)`) or pipeline (`my_variable |> factor()`).
+
+
+```{r}
+#| label: reassign-factors
+
+
+
+
+```
+
+**Task:** Consider the information you have available to you in your dataset. What factor variables could you create based on the information you have? Create at least one new factor variable in your dataset using `mutate()` and `factor()`. Optionally, add ordering to your factor levels if it makes sense for your new variables.
+
+```{r}
+#| label: create-new-factors
+
+
+
+
+```
+
