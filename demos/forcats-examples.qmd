@@ -1,0 +1,1083 @@
+---
+title: "Tidyverse Wrangling with Factors"
+subtitle: "factors, levels, categorical data w/ base & `forcats`"
+date: "2/10/2026"
+footer: "D2M-R I | Week 6 & 7" #  quarter, week, and class
+
+execute:
+  echo: true
+  warning: false
+  message: false
+editor: source
+---
+
+```{r}
+#| label: setup
+#| include: false
+
+library(tidyverse)
+set.seed(123)
+```
+
+# Introduction to Factors
+
+## Categorical Data
+
+
+Categorical variables
+
+-   Represent a set of distinct groups or categories that are:
+-   Finite in number
+-   Mutually exclusive
+-   Non-numeric
+    -   i.e., mathematical operations don't make sense
+
+Examples
+
+-   Gender
+-   Education level
+-   Survey responses (e.g., "Agree", "Neutral", "Disagree")
+
+
+## Categorical Data Types
+
+
+Category Types
+
+-   **Nominal**: No inherent order (e.g., colors, types of fruit)
+-   **Ordinal**: Meaningful order (e.g., "Low", "Medium", "High")
+
+Also known as
+
+-   Factor variables
+-   Discrete variables
+-   Qualitative data 
+    -   Terrible. Don't call it that.
+
+
+## Factor data
+
+-   [Factors]{.keyword} are R's representation of categorical data
+-   Integer vectors with level labels
+
+```{r}
+#| label: factor-structure
+
+f <- factor(c("low", "medium", "high", "medium", "low"))
+
+typeof(f)
+str(f)
+```
+
+
+
+## Factors vs. strings
+
+Factors
+
+- Stored as integers with labels
+- Memory efficient (at large scale)
+- Control ordering
+- Useful for: 
+    -   non-numeric modeling
+    -   visualization
+
+Strings
+
+- Stored as many ordered character units
+- More memory (at large scale)
+- Flexible manipulation
+- Useful for: 
+    -   text processing
+    -   unique values
+
+## Memory efficiency
+
+Compare object size of factor vs character vector with repeated values
+
+```{r}
+#| label: factor-vs-string-small-define
+
+# Small scale 
+small_strings <- c(
+    "low", "medium", 
+    "high", "medium", "low")
+small_factor <- factor(small_strings)
+
+```
+
+```{r}
+#| label: factor-vs-string-small-compare
+
+# Strings: ~.3 KB
+object.size(small_strings) 
+
+# Factor: ~.7 KB - negligibly larger
+object.size(small_factor) 
+```
+
+```{r}
+#| label: factor-vs-string-large-define
+
+# Larger scale
+big_strings <- rep(c(
+    "low", "medium", "high"), 
+    length.out = 10000) # repeat to length 10,000
+big_factors <- factor(big_strings)
+
+```
+
+```{r}
+#| label: factor-vs-string-larger-compare
+
+# Strings: ~80.2 KB
+object.size(big_strings)  
+
+# Factor:  ~40.6 KB - ~50% smaller
+object.size(big_factors)  
+```
+
+```{r}
+#| label: factor-vs-string-long-strings-define
+
+# Long strings
+long_strings <- rep(c(
+    "Dissatisfied, very dissatisfied, or extremely dissatisfied", 
+    "Not at all dissatisfied, somewhat dissatisfied, or a little dissatisfied", 
+    "Neutral and/or no response given"), 
+    length.out = 2000) # repeat to length 2,000
+long_factors <- factor(long_strings)
+```
+
+```{r}
+#| label: factor-vs-string-long-strings-compare
+
+# Strings: ~8.4 KB
+object.size(long_strings) 
+
+# Factor: ~4.8 KB - ~50% smaller
+object.size(long_factors)  
+```
+
+
+## Base R factor functions
+
+**Core base R factor functions:**
+
+- `factor()`: Create factor
+- `levels()`: View/set levels
+- `nlevels()`: Count levels
+- `as.character()`: Convert to string
+- `as.numeric()`: Get underlying integers
+
+
+```{r}
+#| label: base-r-factors
+
+f <- factor(c("low", "medium", "high", "medium", "low"))
+
+levels(f)  # View levels
+nlevels(f) # Count levels
+as.character(f)  # Convert to strings
+as.numeric(f)  # Get underlying integers
+```
+
+
+## `forcats` package: simplify working with factors {.left-sidebar-slide fullscreen=true style="font-size: .8;"}
+
+
+[forcats]{.pkg}: <br> Simplify working with factors
+
+-   Tidyverse package _**for cat**_egorical variables
+-   Largely helpers/wrapper for base R functions with:
+    -   Consistent `fct_*` naming
+    -   More intuitive syntax
+    -   Better compatibility with tidyverse workflows
+    -   Additional functionality for common tasks
+
+Create: `as_factor`
+Inspect: `fct_unique`, `fct_count`, `fct_match`
+Combine: `fct_c`, `fct_unify`
+Reorder: `fct_relevel`, `fct_infreq`, `fct_reorder`, `fct_reorder2`, `fct_rev`, `fct_inorder`, `fct_shift`, `fct_shuffle`
+Reassign: `fct_recode`, `fct_relabel`, `fct_anon`, `fct_collapse`, `fct_lump_*n`, `fct_other`
+Add/Drop: `fct_expand`, `fct_drop`, `fct_na_value_to_level`
+
+
+# Create Factors
+
+## Create factors
+
+-   **Base:** Create factors with `factor()`
+    -   Alphabetizes levels by default
+    -   Includes arguments to specify order, labels, and more
+
+```{r}
+#| label: create-factors-factor
+
+# Using factor()
+f1 <- factor(c("low", "medium", "high", "medium", "low"))
+levels(f1)  # Alphabetical order
+as.numeric(f1)  # high=1, low=2, medium=3
+```
+
+-   **`forcats`:** Create factors with `as_factor()`
+    -   Preserves order of appearance
+    -   No additional specification needed or possible
+
+
+```{r}
+#| label: create-factors-as-factor
+
+# Using as_factor() from forcats
+f2 <- as_factor(c("low", "medium", "high", "medium", "low"))
+levels(f2)  # Order of appearance
+as.numeric(f2)  # low=1, medium=2, high=3
+```
+
+
+## Create: specify level order
+
+
+-   Define levels when creating factors: `f <- factor(x, levels = c(...))`
+    -   `levels` argument: Set specific levels and order
+    -   Overrides default (alphabetical)
+    -   Elements of `levels` vector must match unique values in `x`
+    -   Levels not in `x` will be created but have no observations
+    -   Observations in `x` without corresponding levels will become NA
+-   *no forcats function*
+    -   `as_factor()` necessarily preserves order of appearance
+
+
+```{r}
+#| label: specify-levels-factor
+
+x <- c("B", "A", "C", "A", "B")
+f <- factor(x, levels = c("C", "B", "A"))
+f
+levels(f)  # Custom order
+```
+
+
+## Create: specify level labels
+
+`factor(x, levels = c(...), labels = c(...))`
+
+```{r}
+#| label: specify-labels-define
+
+x <- c("B", "A", "C", "A", "B")
+```
+
+
+```{r}
+#| label: specify-levels-only
+
+f_levels_only <- factor(x, 
+    levels = c("C", "B", "A"))
+
+f_levels_only # Custom order, default labels
+levels(f_levels_only)  
+
+```
+
+```{r}
+#| label: specify-with-labels
+
+f_with_labels <- factor(x, 
+    levels = c("C", "B", "A"), 
+    labels = c("Gamma", "Beta", "Alpha"))
+f_with_labels # Custom order & labels
+
+```
+
+
+## Create: specify meaningful order
+
+
+**For ordinal data with meaningful order**
+
+- Likert scales (Strongly Disagree → Strongly Agree)
+- Education levels (HS → Bachelor's → Master's → PhD)
+- Sizes (Small → Medium → Large)
+
+
+## Create: ordered vs. unordered factors
+
+`factor(..., ordered = TRUE)`: 
+
+Encode order with argument
+
+```{r}
+#| label: ordered-factors-argument
+
+sizes_unordered <- factor(
+    c("medium", "small", "large", "small", "medium"),
+    levels = c("small", "medium", "large"),
+    ordered = TRUE)
+sizes_unordered
+levels(sizes_unordered)
+as.numeric(sizes_unordered) 
+```
+
+`ordered(...)`: 
+
+Create ordered factor directly
+
+```{r}
+#| label: ordered-factors-direct
+
+sizes_ordered <- ordered(
+    c("medium", "small", "large", "small", "medium"),
+    levels = c("small", "medium", "large"))
+sizes_ordered
+levels(sizes_ordered)
+as.numeric(sizes_ordered) 
+
+```
+
+:::
+
+::::
+
+::: notes
+
+Levels always have an order, because they are stored as integers and integers are necessarily ordered.
+*Ordered* factors explicitly encode that order for ordinal data. This allows for meaningful comparisons and appropriate statistical treatment in models.
+
+When you actually view the contents of an ordered factor, you'll see that its levels aren't just listed in order, they have `<` between them. 
+This is saying to the human user (and R functions that respect ordered factors) that there is a meaningful order to these levels, not simply an arbitrary assignment to numerals that happen to have an order because that's how numbers work.
+
+::: 
+
+
+## Meaningful ordering
+
+
+```{r}
+#| label: unordered-factor-order
+
+sizes_unordered <- factor(
+    c("medium", "small", "large", "small", "medium"),
+    levels = c("small", "medium", "large"),
+    ordered = FALSE)
+
+sizes_unordered
+
+```
+
+```{r}
+#| label: unordered-factor-comparisons
+#| warning: false
+
+sizes_unordered[1] < sizes_unordered[3]  
+sizes_unordered[2] > sizes_unordered[4]  
+sizes_unordered[2] == sizes_unordered[4] 
+```
+
+
+```{r}
+#| label: ordered-factor-order
+
+sizes_ordered <- factor(
+    c("medium", "small", "large", "small", "medium"),
+    levels = c("small", "medium", "large"),
+    ordered = TRUE) # or use ordered() function
+
+sizes_ordered
+
+
+```
+
+
+```{r}
+#| label: ordered-factor-comparisons
+#| warning: false
+
+sizes_ordered[1] < sizes_ordered[3]  
+sizes_ordered[2] > sizes_ordered[4]  
+sizes_ordered[2] == sizes_ordered[4] 
+```
+
+## Inspect factors
+
+
+**Examine existing factor structure**
+
+
+```{r}
+#| label: create-factor-inspect
+x <- factor(c("medium", "high", "low", "high", "high", "medium"))
+```
+
+- Base:
+    - `levels()`: View level labels
+    - `nlevels()`: Count levels
+
+```{r}
+#| label: inspect-levels-base
+
+levels(x) # character vector
+nlevels(x) # integer count
+```
+
+- `forcats`:
+    - `fct_unique()`: Unique values of levels
+    - `fct_count()`: Frequency table  
+    
+```{r}
+#| label: inspect-levels-forcats
+fct_unique(x) # factor of levels
+fct_count(x) # tibble of lvl & ct.
+```
+
+
+## Combine factors
+
+```{r}
+#| label: combine-factors-define
+
+f1 <- factor(c("a", "c"))
+f2 <- factor(c("b", "a"))
+```
+
+
+`fct_c()`: Combine factors
+
+```{r}
+#| label: combine-factors-fct-c
+
+f_combined <- fct_c(f1, f2)
+
+f1
+f2
+f_combined
+
+```
+
+
+`fct_unify()`: Unify levels of factors
+
+```{r}
+#| label: combine-factors-fct-unify
+
+unified_list <- list(f1, f2)
+f_unified <- fct_unify(unified_list)
+
+f_unified
+
+```
+
+
+# Reorder Factor Levels
+
+## Reorder: manual assignment (relevel)
+
+`fct_relevel()`: Move levels to specific positions
+
+```{r}
+#| label: manual-reordering-create
+#| output-location: column
+
+f <- factor(c("medium", "low", "high", "medium", "low"))
+f # Current order
+```
+
+
+Move specific level to front
+
+```{r}
+#| label: manual-reordering-move-front
+
+# Move "low" to front
+fct_relevel(f, "low")  
+```
+
+
+Move one level relative to another
+
+```{r}
+#| label: manual-reordering-relative-position
+
+# Move "medium" before "high"
+fct_relevel(f, "medium", "high")  
+```
+
+
+Move one level to specific position
+
+```{r}
+#| label: manual-reordering-absolute-position
+
+# Move "high" after first level
+fct_relevel(f, "high", after = 1)  
+
+# Move "low" to last position
+fct_relevel(f, "low", after = Inf)
+```
+
+
+## Reorder: reverse
+
+`fct_rev()`: Reverse current level order
+
+```{r}
+#| label: reverse-order-create
+
+f <- factor(c("large", "small", "medium", "medium", 
+    "small", "medium", "small", "medium", "medium", "medium"), 
+    levels = c("small", "medium", "large"))
+f
+```
+
+```{r}
+#| label: reverse-order-rev
+fct_rev(f)
+```
+
+## `fct_rev` use case: flip bar chart
+
+**Use case**: Flip bar chart from top-to-bottom to bottom-to-top
+
+
+```{r}
+ggplot(data.frame(f), aes(x = f)) + 
+  geom_bar() +
+  labs(title = "Bar Chart with Original Factor Order")
+```
+
+
+```{r}
+ggplot(data.frame(f), aes(x = fct_rev(f))) +
+  geom_bar() +
+  labs(title = "Bar Chart with Reversed Factor Order")
+```
+
+
+## Reorder: by appearance
+
+`fct_inorder()`: Order by first appearance
+
+```{r}
+#| label: reorder-by-appearance-create
+#| output-location: column
+
+f <- factor(c("b", "b", "a", "c", "c", "c"))
+f
+```
+
+
+Reorder by first appearance
+
+```{r}
+#| label: reorder-by-appearance-inorder
+
+fct_inorder(f)
+```
+
+
+Equivalent to creating with `as_factor()`
+
+```{r}
+f <- as_factor(c("b", "b", "a", "c", "c", "c"))
+f
+```
+
+
+## Reorder: by frequency
+
+`fct_infreq()`: Most common first
+
+```{r}
+#| label: reorder-by-frequency-create
+f <- factor(c("b", "b", "a", "c", "c", "c"))
+f
+```
+
+Reorder by frequency, most common first
+
+```{r}
+fct_infreq(f)
+```
+
+
+## `fct_infreq` use case: interpretable bar charts
+
+```{r}
+#| label: bar-chart-factor-create
+
+f <- factor(c("b", "b", "b", "a", "c", "c"))
+```
+
+
+```{r}
+#| label: bar-chart-default-ordered
+
+ggplot(data.frame(f), aes(x = f)) +
+  geom_bar() +
+  labs(title = 
+          "Bar Chart with Default (Alphabetical) Ordered Factor")
+```
+
+
+```{r}
+#| label: bar-chart-infreq-ordered
+
+ggplot(data.frame(f), aes(x = fct_infreq(f))) +
+  geom_bar() +
+  labs(title = 
+          "Bar Chart with Frequency-Ordered Factor")
+```
+
+
+## Reorder: by another variable (summary)
+
+```{r}
+#| label: create-small-diamonds
+#| include: false
+
+diamonds_100 <- diamonds |> 
+    filter(carat < 1.2) |> 
+    slice_sample(n = 100)
+```
+
+
+`fct_reorder(f, x, fun)`: Order factor by summary of another variable 
+
+Default: sort by level median
+
+```{r}
+#| label: reorder-by-other-variable-median
+
+ggplot(diamonds_100, aes(
+    x = fct_reorder(cut, carat), y = carat)) +
+    geom_boxplot() +
+    labs(title = "Reordered by Median Carat Value")
+```
+
+
+Or sort by any other summary function, e.g., `max`
+
+```{r}
+#| label: reorder-by-other-variable-max
+
+ggplot(diamonds_100, aes(
+    x = fct_reorder(cut, carat, max), y = carat)) +
+    geom_boxplot() +
+    labs(title = "Reordered by Maximum Carat Value")
+```
+
+
+## Reorder: by another variable (relationship)
+
+`fct_reorder2(f, x, y)`: Order by relationship with two variables
+
+Compare last values of y for each level of f across x (great for line plots)
+
+```{r}
+#| label: reorder-by-other-variable-reorder2
+#| output-location: column
+
+diamonds_100 |> 
+    ggplot(aes(x = carat, y = price, 
+        color = fct_reorder2(cut, carat, price))) +
+    geom_line(stat = "summary", fun = mean) +
+    labs(title = "Line Plot with Legend Ordered by Endpoint")
+```
+
+
+# Reassign Factor Levels
+
+## Reassign: rename levels
+
+`fct_recode()`: Manually rename specific levels `new_name = "old_name"`
+
+Create factor with messy level names
+
+```{r}
+#| label: rename-levels-create
+
+f <- factor(c("Low ", "Medium", "High", "Medium ", "Low", "high", "Hihg"))
+f
+```
+
+
+Clean up names. Map multiple old levels to same new or existing level individually.
+
+```{r}
+f_clean <- fct_recode(f,
+                      Low = "Low ",
+                      Medium = "Medium ",
+                      High = "high",
+                      High = "Hihg")
+
+f_clean
+```
+
+
+## Reassign: collapse levels manually
+
+`fct_collapse()`: Combine multiple levels into one `new_name = c("old1", "old2")`
+
+```{r}
+#| label: collapse-levels-create
+
+f <- factor(c("A", "A", "B", "B", "B", "C", "C", "C", "C", "D", "E", "F", "G", "G", "G", "G", "G"))
+
+```
+
+
+```{r}
+#| label: collapse-levels-manual
+#| output-location: column
+
+f_collapsed <- fct_collapse(
+    f,
+    Group1 = c("A", "B"),
+    Group2 = c("C", "D"),
+    Group3 = "E")
+
+f_collapsed
+```
+
+## Reassign: lump levels manually
+
+`fct_other()`: Lump (non/)specified levels into "Other"
+
+```{r}
+#| label: lump-levels-create
+
+f <- factor(c("A", "A", "B", "B", "B", "C", "C", "C", "C", "D", "E", "F", "G", "G", "G", "G", "G"))
+```
+
+```{r}
+#| label: lump-levels-manual-keep
+
+fct_other(f, keep = c("A", "B", "C"))
+```
+
+```{r}
+#| label: lump-levels-manual-drop
+
+fct_other(f, drop = c("A", "B", "C"))
+```
+
+
+## Reassign: lump levels automatically
+
+`fct_lump_*()` family: Keep levels by condition, lump rest into "Other"
+
+```{r}
+#| label: collapse-levels-create-dup
+
+f <- factor(c("A", "A", "B", "B", "B", "C", "C", "C", "C", "D", "E", "F", "G", "G", "G", "G", "G"))
+
+```
+
+`fct_lump_n()`: keep most frequent N
+
+```{r}
+#| label: collapse-levels-lump-n
+
+fct_lump_n(f, n = 3)
+```
+
+
+`fct_lump_prop()`: keep levels above percent frequency
+
+```{r}
+#| label: collapse-levels-lump-prop
+
+fct_lump_prop(f, prop = 0.2)
+```
+
+`fct_lump_min()`: keep levels with at least N observations
+
+```{r}
+#| label: collapse-levels-lump-min
+
+fct_lump_min(f, min = 4)
+```
+
+
+
+# Add/Drop Levels
+
+## Add/Drop: add and remove levels
+
+
+```{r}
+#| label: add-levels-create
+
+f_abc <- factor(c("A", "B", "C"))
+f_abc
+```
+
+`fct_expand()`: Add new levels without observations
+
+```{r}
+#| label: add-levels-expand
+
+fct_expand(f, "D", "E")
+```
+
+`fct_drop()`: Remove levels with no observations
+
+```{r}
+#| label: drop-levels-create
+
+f_abcde <- factor(c("A", "B", "C"), 
+    levels = c("A", "B", "C", "D", "E"))
+f_abcde
+
+```
+
+```{r}
+#| label: drop-levels-drop
+
+fct_drop(f_abcde)
+```
+
+In combination
+
+```{r}
+#| label: remove-again
+
+fct_expand(f_abc, "D", "E") |> fct_drop()
+```
+
+
+## `fct_drop` use case: tibble filter
+
+```{r}
+#| label: drop-create-tibble
+#| output-location: column
+
+# Create a tibble with a factor variable
+t <- tibble(
+    f = factor(c("A", "B", "C", "D", "E")),
+    i = c(1:5)
+)
+
+t
+```
+
+```{r}
+#| label: drop-view-factor-column
+#| output-location: column
+
+t$f
+```
+
+
+```{r}
+#| label: drop-unused-levels-filter
+#| output-location: column
+
+
+t_subset <- filter(t, i <= 3)
+t_subset$f
+
+```
+
+```{r}
+#| label: drop-unused-levels-droplevels
+#| output-location: column
+
+fct_drop(t_subset$f)
+```
+
+
+
+## Add/Drop: handle missing values
+
+`fct_na_value_to_level()`: Convert between `NA` values and `NA` levels
+
+```{r}
+#| label: handle-missing-values-create
+
+f <- factor(c("A", "B", NA, "A", "C", NA, "B"))
+f
+```
+
+
+Create explicit NA level
+
+```{r}
+#| label: handle-missing-values-na-level
+
+fct_na_value_to_level(f)
+```
+
+Convert NAs to named level
+
+```{r}
+#| label: handle-missing-values-named-level
+
+fct_na_value_to_level(f, level = "(Missing)")
+```
+
+
+
+## See Also 
+
+`forcats` functions we didn't talk about:
+
+::: {.nonincremental}
+1.  Create: n/a -- just `as_factor()`
+2.  Inspect:
+    1.  `fct_match(f, lvls)`: check for levels in f 
+3.  Combine:
+    1.  `fct_cross(f1, f2)`: Create interaction factor
+4.  Reorder
+    1.  `fct_inseq()`: Order by natural sequence
+    2.  `fct_shift()`: Shift levels L or R, wrapping around
+    3.  `fct_shuffle()`: Randomly permute levels
+5.  Modify
+    1.  `fct_lump_lowfreq()`: Lump low-frequency levels
+    2.  `fct_relabel()`: Rename levels with function
+    3.  `fct_anon()`: Anonymize to random integers
+
+:::
+
+
+# Practical Applications
+
+## Data cleaning workflow
+
+**String cleaning → Factor creation**
+
+Common workflow:
+
+1. Trim whitespace
+2. Standardize case
+3. Fix inconsistencies
+4. Convert to factor
+
+Messy categorical (string) data with inconsistent entries
+
+```{r}
+#| label: messy-categorical-data
+
+# Create messy data
+messy <- c(" Low", "medium ", "HIGH", "medium", " low", "high", NA, "Hihg")
+```
+
+
+Pipeline wth `str` and factor creation in one step
+
+```{r}
+#| label: cleaning-pipeline
+
+messy |> 
+    str_trim() |> 
+    str_to_lower() |> 
+    str_replace("hihg", "high") |> 
+    factor(levels = c("low", "medium", "high"), 
+        ordered = TRUE) |> 
+    fct_na_value_to_level("no response")
+```
+
+
+## Visualization preparation
+
+**Make better plots with factor control**
+
+- Reorder for sorted bars (`fct_infreq`, `fct_reorder`)
+- Collapse rare categories (`fct_lump_*`)
+- Control legend order
+
+## Visualization preparation
+
+Create a simple bar chart
+
+```{r}
+#| label: bar-chart-unsorted
+#| echo: true
+#| eval: false
+
+diamonds_100 |> 
+    ggplot(aes(x = clarity)) +
+    geom_bar() +
+    labs(title = "Bar chart with no ordering",
+        x = "Default factor variable")
+```
+
+Reorder factor by decreasing frequency
+
+```{r}
+#| label: bar-chart-freq
+#| echo: true
+#| eval: false
+
+diamonds_100 |> 
+ggplot(aes(x = 
+        fct_infreq(clarity))) +
+geom_bar() +
+labs(title = "Bar chart with freq. ordering",
+    x = "Somewhat arranged factor variable")
+```
+
+Lump rare categories for cleaner visualization
+
+```{r}
+#| label: bar-chart-freq-lump
+#| echo: true
+#| eval: false
+
+diamonds_100 |> 
+ggplot(aes(x = 
+        fct_lump_n(clarity, n = 4) |> 
+        fct_infreq())) +
+geom_bar() +
+labs(title = "Bar chart with freq. 
+    ordering + lumping",
+    x = "Cleverly arranged factor variable")
+```
+
+
+Move "other" level to the end
+
+```{r}
+#| label: bar-chart-freq-lump-other-end
+#| echo: true
+#| eval: false
+
+diamonds_100 |> 
+ggplot(aes(x = 
+        fct_lump_n(clarity, n = 4) |> 
+        fct_infreq() |> 
+        fct_relevel("Other", 
+            after = Inf))) +
+geom_bar() +
+labs(title = "Bar chart with freq. 
+    ordering + lumping + relevel",
+    x = "Brilliantly arranged factor variable")
+```
+
+
+## Modeling categorical data
+
+**Factor order matters in models!** The first level is the "dummy" or reference category. Output is only interpretable in relation to that first level.
+
+Example: using `mtcars` data, predict `mpg` using `cyl` (number of cylinders) as a factor variable.
+
+Fit regression model with `cyl` as factor
+
+```{r}
+#| label: model-reference-level-default
+
+summary(
+    lm(mpg ~ factor(cyl), data = mtcars)
+)
+```
+
+Use `fct_rev()` to change reference level
+
+```{r}
+#| label: model-reference-level-reverse
+
+summary(
+    lm(mpg ~ fct_rev(factor(cyl)), data = mtcars)
+)
+
+```
