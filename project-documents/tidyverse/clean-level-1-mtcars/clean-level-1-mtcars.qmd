@@ -38,10 +38,10 @@ Detailed submission instructions are included in the `core-submission.qmd` docum
 1. **Renaming Columns:** Rename columns to match the original `mtcars` dataset column names.
 2. **Reordering Columns:** Ensure the columns are in the correct order.
 3. **Sorting Rows:** Sort the rows by `mpg` (miles per gallon) and then by `cyl` (number of cylinders).
-4. **Changing Data Types:** Ensure `gear` and `carb` are factors and other columns are numeric.
+4. **Changing Data Types:** After matching the goal dataset, convert `gear` and `carb` are factors and other columns are numeric.
 5. **Mutating Data:** Create a new column `hp_per_cyl` calculated as `hp` (horsepower) divided by `cyl`.
 6. **String Manipulation:** Use `stringr` to clean any unwanted spaces or characters in the `model` column.
-7. **Handling Factors:** Use `forcats` to ensure the levels of `gear` are ordered as `3`, `4`, `5`.
+7. **Handling Factors:**  After matching the goal dataset, use `forcats` to ensure the levels of `gear` are ordered as `3`, `4`, `5`.
 
 # Setup
 
@@ -261,6 +261,36 @@ Questions:
 5. Is your dataset identical to `goal.mtcars`? If not, what are the remaining issues? If there were any issues you could not resolve in code, describe a proposed solution in plain English.
 
 <!-- answer below -->
+
+## Create factors
+
+Once you have matched the goal dataset, convert `gear` and `carb` to factors and ensure the levels of `gear` are ordered as `3`, `4`, `5`. 
+
+```{r}
+#| label: create-factors
+
+
+```
+
+```{r}
+#| label: order-factor-levels
+
+
+```
+
+```{r}
+#| label: check-factors
+
+
+```
+
+
+Questions:
+
+6. Why would it be a good idea of converting `gear` and `carb` to factors? What are the advantages of having `gear` (specifically) as an ordered factor?
+
+<!-- answer below -->
+
 
 
 # Optional Cleaning Tasks
