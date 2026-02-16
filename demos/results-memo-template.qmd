@@ -1,0 +1,257 @@
+---
+title: "Results memo: [Project title]"
+format:
+  html:
+    toc: true
+    code-fold: true
+execute:
+  warning: false
+  message: false
+---
+
+```{r}
+#| label: setup
+
+# Load necessary libraries
+library(tidyverse)
+
+# df <- YOUR_PROJECT_DATA
+
+
+```
+
+# Introduction
+
+Write 2-4 sentences explaining the premise of the dataset and offering an overview of the variables.
+
+A short literature review should go here, but may be skipped if using dummy data.
+
+## Research questions
+
+Write your research questions in plain language. Identify your primary outcomes and your key predictor/grouping variables. These should directly align with the figures and analyses you report in the results section.
+
+## Variables and sample
+
+Write 2–4 sentences describing:
+
+- What each variable means (in words)
+- Any exclusions you made (if any)
+
+Aim to use inline values where possible, for example:
+
+The analytic sample includes `r nrow(df)` observations.
+
+# Results
+
+Optionally, before presenting the first analysis (i.e., here, below the Results first-level header), write 1-3 sentences summarizing what you will present. This should quickly anchor your reader, not repeat what you just said or will say.
+
+<!--
+Following each analysis below (i.e., NOT right here), write 3–5 sentences reporting your results:
+
+- What the figure shows
+- What the statistical summary/analysis shows
+- What you can (and/or cannot) conclude in relation to your research questions
+
+Where possible, use inline code to reference values or perform simple computation in-text.
+This may require saving figures/staistics as objects rather than running them directly in the code chunk. 
+For example, you might save a t-test as an object and then reference the t and p values in your written report.
+-->
+
+## Distribution: 1 Continuous Variable
+
+**Figure:** Histogram
+
+```{r}
+#| label: fig-distribution-1var-histogram
+#| fig-cap: "Distribution of [VARIABLE]."
+
+
+
+
+```
+
+**Statistics:** mean, median, SD, and IQR
+
+```{r}
+#| label: tbl-distribution-1var-summary
+#| tbl-cap: "Summary statistics for [VARIABLE]."
+
+
+
+
+```
+
+<!-- Written report of analysis findings: --> 
+
+
+
+
+## Observation Frequency: 1 Categorical Variable
+
+**Figure:** Bar chart
+
+```{r}
+#| label: fig-frequency-1var-bar
+#| fig-cap: "Frequency of [CATEGORICAL VARIABLE]."
+
+
+
+```
+
+**Statistics:** frequency and percentage of each category
+
+```{r}
+#| label: tbl-frequency-1var-percent
+#| tbl-cap: "Frequency and percentage of [CATEGORICAL VARIABLE]."
+
+
+
+
+
+```
+
+<!-- Written report of analysis findings: -->
+
+
+
+
+
+### Observation Frequency: 2 Categorical Variables
+
+**Figure:** bar chart
+
+```{r}
+#| label: fig-frequency-2var-bar
+#| fig-cap: "Frequency of [CATEGORICAL VARIABLE 1] by [CATEGORICAL VARIABLE 2]."
+
+
+
+
+```
+
+**Statistics:** proportional distribution
+
+```{r}
+#| label: tbl-frequency-2var-proptable
+#| tbl-cap: "Proportional distribution of [CATEGORICAL VARIABLE 1] by [CATEGORICAL VARIABLE 2]."
+
+
+
+
+```
+
+<!-- Written report of analysis findings: -->
+
+
+
+
+
+
+## Association: 2 Continuous Variables
+
+**Figure:** scatterplot with regression line
+
+```{r}
+#| label: fig-association-2var-scatter
+#| fig-cap: "Association between [X] and [Y] (complete cases)."
+
+
+
+
+```
+
+**Statistics:** correlation coefficient ($r$) and $p$-value
+
+```{r}
+#| label: model-association-2var-corr
+
+
+
+
+```
+
+
+<!-- Written report of analysis findings: -->
+
+
+
+
+
+
+## Group Comparison: 1 Continuous and 1 Categorical (2 lvl)
+
+**Figure:** boxplot with jitter
+
+```{r}
+#| label: fig-group-compare-2var-2lvl-boxplot
+#| fig-cap: "Group differences in [OUTCOME] by [GROUP] (complete cases)."
+
+
+
+
+
+```
+
+**Statistics:** t-test with group means, t-value, degrees of freedom, and p-value
+
+
+```{r}
+#| label: model-group-compare-2var-2lvl-ttest
+
+
+
+```
+
+<!-- Written report of analysis findings: -->
+
+
+
+
+
+## Group Comparison: 1 Continuous & 1 Categorical (3+ lvl)
+
+**Figure:** boxplot with jitter
+
+```{r}
+#| label: fig-group-compare-2var-3lvl-boxplot
+#| fig-cap: "Group differences in [OUTCOME] by [GROUP] (complete cases)."
+
+
+
+
+
+```
+
+
+**Statistics:** ANOVA with group means, F-value, degrees of freedom, $p$-value, and post-hoc pairwise comparisons
+
+```{r}
+#| label: model-group-compare-2var-3lvl-anova
+
+
+
+
+```
+
+<!-- Written report of analysis findings: -->
+
+
+
+
+# Discussion
+
+Summarize findings concisely without redundancy. Interpret results in relation to your research questions and hypotheses. 
+
+## Implications
+
+Propose what these findings could mean in relation to your research problem, beyond the specific hypotheses tested.
+
+## Limitations
+
+Summarize limitations of your methods, data, or analyses.
+
+## Future Directions
+
+Propose next steps that could overcome this study's limitations. Suggest new research questions that speak to your research problem that build on the findings of this study. In other words, what can you explore, predict, and/or confirm after completing this study that you could not have before doing so?
+
+

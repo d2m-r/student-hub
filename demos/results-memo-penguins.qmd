@@ -1,0 +1,291 @@
+---
+title: "Results memo: Palmer Penguins Analysis"
+format:
+  html:
+    toc: true
+    code-fold: true
+execute:
+  warning: false
+  message: false
+---
+
+```{r}
+#| label: setup
+
+library(tidyverse)
+library(palmerpenguins)
+
+# df <- YOUR_PROJECT_DATA
+df <- penguins
+
+glimpse(df)
+
+```
+
+# Introduction
+
+The Palmer Penguins dataset contains measurements of three penguin species (Adelie, Chinstrap, and Gentoo) collected from three islands in the Palmer Archipelago in Antarctica. This dataset is often used for data visualization and statistical analysis exercises.
+
+## Research questions
+
+This is a brief report of exploratory analyses using the Palmer Penguins dataset. 
+
+We first summarize descriptive features of the penguins, including the distribution of body mass among all penguins, the frequency of each penguin species per island.
+
+We then test three simple hypotheses about penguin body mass. First, we test the association of body mass with bill length, predicting a significant positive correlation. This hypothesis is based on the assumption that as organisms increase in overall size, the size of morphological features will also increase. We make no prediction about strength of association.
+
+Second, we compare body mass across sex. Based on general patterns of sexual dimorphism in birds, we predict that males will have larger mass than females, on average. 
+
+Third, we compare body mass across species. Previous analysis with these data have shown that differences in bill size are negligible between Chinstrap and Gentoo penguins, but that Adelie penguins have significantly smaller bills than the other two species. If our hypothesis above is correct, and bill size is positively correlated with body mass, we would predict an overall significant difference in body mass among the three species, driven primarily by smaller mass in Adelie penguins.
+
+
+## Variables and sample
+
+The Palmer penguin includes variables such as species, island, bill length, bill depth, flipper length, body mass, and sex. 
+
+In our descriptive analyses, we summarize distribution of body mass in kilograms^[Mass is recorded in the data in grams but reported in kilograms for ease of interpretation.] (continuous) and the proportional distribution of species (factor, 3-level) by island (factor, 3-level)
+
+For our predictive analysis, we focus on body mass as our primary outcome variable, with bill length in millimeters (continuous), sex (factor, 2-level), and species as predictors.
+
+```{r}
+#| label: data-summary
+
+total_observations <- nrow(df)
+
+missing_sex <- sum(is.na(df$sex))
+
+missing_mass <- sum(is.na(df$body_mass_g))
+
+missing_bill <- sum(is.na(df$bill_length_mm))
+
+missing_island <- sum(is.na(df$island))
+
+```
+
+
+In all analyses, we exclude observations where any measurements included in the analysis are missing. Out of a total of `r total_observations`, `r missing_sex` did not include data on sex, `r missing_mass` did not included data on body mass, and `r missing_bill`did not included data on bill length.
+
+# Results
+
+## Descriptive Analyses
+
+### Distribution: Body Mass
+
+@fig-distribution-1var-histogram is a histogram showing the distribution of body mass in grams among all penguins in the dataset. The distribution appears to be approximately normal, with a slight right skew.
+
+```{r}
+#| label: fig-distribution-1var-histogram
+#| fig-cap: "Distribution of [VARIABLE]."
+
+df |>
+    ggplot(aes(x = body_mass_g)) +
+    geom_histogram()
+
+```
+
+
+```{r}
+#| label: tbl-distribution-1var-summary
+#| tbl-cap: "Summary statistics for [VARIABLE]."
+
+df |> 
+    summarize(
+        mean = mean(body_mass_g, na.rm = TRUE),
+        sd = sd(body_mass_g, na.rm = TRUE),
+        median = median(body_mass_g, na.rm = TRUE),
+        iqr = IQR(body_mass_g, na.rm = TRUE)
+    )
+
+```
+
+
+The histogram in @fig-distribution-1var-histogram shows the distribution of body mass in grams among all penguins in the dataset. The distribution appears to be approximately normal, with a slight right skew.
+
+The mean mass was 4.2 kilograms ($SD$ = .8). The median mass was 4.1 kilograms, with an interquartile range pf 1.2 kilograms.
+
+This distribution shows that most penguins in the dataset have a body mass between 3.5 and 5 kilograms, with a few outliers above 5 kilograms. This suggests that while there is some variability in body mass among the penguins, most fall within a relatively narrow range.
+
+### Observation Frequency: Species
+
+```{r}
+#| label: fig-frequency-1var-bar
+#| fig-cap: "Frequency of penguin species observations."
+
+df |>
+    ggplot(aes(x = species)) +
+    geom_bar()
+```
+
+
+```{r}
+#| label: tbl-frequency-1var-percent
+#| tbl-cap: "Frequency and percentage of penguin species observations."
+
+df |> 
+    group_by(species) |>
+    summarize(n = n()) |>
+    mutate(pct = n / sum(n) * 100)
+
+# OR with count() -- ?count to see why
+# 
+# df |>
+#     count(species) |>
+#     mutate(pct = n / sum(n) * 100)
+
+```
+
+
+Number of observations for each species is visualized in @fig-frequency-1var-bar. There were notably fewer observations of Chinstrap penguins ($N$ = 68, 19.8%) than either Adelie ($N$ = 152, 44.2%) or Gentoo ($N$ = 124, 36.0%) penguins. This imbalance in the number of observations across species may limit our ability to detect differences in body mass across species, particularly for Chinstrap penguins. 
+
+
+### Observation Frequency: Species by Island
+
+
+```{r}
+#| label: fig-frequency-2var-bar
+#| fig-cap: "Frequency of penguin species by island."
+
+df |> 
+    drop_na(species, island) |> 
+    ggplot(aes(x = island, fill = species)) +
+    geom_bar()
+```
+
+
+```{r}
+#| label: tbl-frequency-2var-proptable
+#| tbl-cap: "Proportional distribution of penguin species by island."
+
+table(df$island, df$species) |> 
+    prop.table(margin = 1) * 100
+
+```
+
+@fig-frequency-2var-bar shows the frequency of each penguin species by island. The distribution of species across islands is notably uneven. Adelie penguins were distributed approximately evenly on all three islands, while Chinstrap penguins were only present on Dream and Gentoo penguins were only found on Biscoe.
+
+On both two islands with multiple species, Adelie penguins made up a smaller proportion of the population than the co-habitating species. On Dream, Chinstrap penguins were slightly more common than Adelie penguins, making up approximately 54% of the island's penguin population. On Biscoe, Gentoo penguins were nearly twice as common as Adelie penguins, making up approximately 74% of the island's penguin population.
+
+
+## Predictive Analyses
+
+### Association: Body Mass and Bill Length
+
+
+```{r}
+#| label: fig-association-2var-scatter
+#| fig-cap: "Association between body mass (g) and bill length (mm)."
+
+df |> 
+    drop_na(body_mass_g, bill_length_mm) |> 
+    ggplot(aes(x = body_mass_g, y = bill_length_mm)) +
+    geom_point() +
+    geom_smooth()
+
+```
+
+```{r}
+#| label: model-association-2var-corr
+
+cor.test(
+    x = df$body_mass_g,
+    y = df$flipper_length_mm
+    )
+
+```
+
+
+Our first predictive analysis is visualized in @fig-association-2var-scatter, comparing body mass and bill length. As predicted, mass and bill length had a strong positive correlation, $r$(340) = .87, $p$ < .001.
+
+
+### Group Comparison: Body Mass and Sex
+
+```{r}
+#| label: fig-group-compare-2var-2lvl-boxplot
+#| fig-cap: "Group differences in body mass by sex."
+
+df |> 
+    drop_na(sex, body_mass_g) |>
+    ggplot(aes(x = sex, y = body_mass_g)) +
+    geom_boxplot() +
+    geom_jitter() +
+    theme_minimal()
+
+```
+
+```{r}
+#| label: model-group-compare-2var-2lvl-ttest
+
+t.test(body_mass_g ~ sex, data = drop_na(df, sex, body_mass_g))
+
+```
+
+Consistent with our prediction and with typical trends of avian sexual dimorphism, we found that male penguins tended to have higher mass, on average, than female penguins (@fig-group-compare-2var-2lvl-boxplot). A two-sample, two-tailed t-test showed significantly different mean mass for female ($M$ = 3.9 kg) and male ($M$ = 4.6 kg) penguins; $t$(323.9) = -8.55, $p$ < .001.
+
+
+### Group Comparison: Body Mass
+
+
+```{r}
+#| label: fig-group-compare-2var-3lvl-boxplot
+#| fig-cap: "Group differences in body mass by species."
+
+df |> 
+    drop_na(species, body_mass_g) |>
+    ggplot(aes(x = species, y = body_mass_g)) +
+    geom_boxplot() +
+    geom_jitter() +
+    theme_minimal()
+
+```
+
+
+```{r}
+#| label: model-group-compare-2var-3lvl-anova
+
+df |> drop_na(species, body_mass_g) |> 
+    group_by(species) |> 
+    summarize(mean_mass = mean(body_mass_g))
+
+anova_output <- aov(body_mass_g ~ species, data = drop_na(df, species, body_mass_g))
+
+summary(anova_output)
+
+TukeyHSD(anova_output)
+```
+
+The results of the correlation analysis provided evidence for our hypothesis that increasing overall mass is associated with increasing bill length. Consequently, we predict that species will differ in overall mass following a similar pattern to species differences in bill length. That is, we predict an overall difference in body mass across all three groups, but no significant difference in mass between Chinstrap and Gentoo penguins.
+
+A comparison of mass across all three species is visualized in @fig-group-compare-2var-3lvl-boxplot, clearly illustrating a different pattern.
+
+A one-way ANOVA revealed that there was a statistically significant difference in mass between at least two groups ($F$(2, 339) = 343.6, $p$ < .001), as predicted. Counter to our hypothesis, this difference was not driven by a difference between Adelie penguins and the other two species. A post-hoc Tukey’s HSD test for multiple comparisons showed no significant difference in mass between Adelie ($M$ = 3.7 kg) and Chinstrap ($M$ = 3.7 kg) penguins, but the mass of Gentoo penguins ($M$ = 5.1 kg) was significantly greater than mass of both Adelie (mean diff. = 1.4 kg, $p$ < .001) and Chinstrap (mean diff. = 1.3 kg, $p$ < 0.001) penguins.
+
+Differences in body mass across species seem to be driven by the larger size of Gentoo penguins, rather than smaller size of Adelie penguins, as we had predicted based on previous findings about bill size. 
+
+
+# Discussion
+
+Our analyses show that body mass among the Palmer penguins is approximately normally distributed, with a mean of 4.2 kg and a slight right skew. The distribution of species across islands is uneven, with Adelie penguins found on all three islands, Chinstrap penguins only found on Dream, and Gentoo penguins only found on Biscoe. We also found that male penguins had significantly higher body mass than female penguins, consistent with typical patterns of sexual dimorphism in birds.
+
+We found a strong positive correlation between body mass and bill length, as predicted based on general assumptions about morphological features scaling with overall size. This finding supports the idea that bill length may be a useful proxy for overall body size in penguins, which could have implications for studies of penguin ecology and evolution that rely on morphological measurements.
+
+This proposition is complicated by our final analysis comparing body mass across species. We found significant differences in body mass across all three species of penguin, but contrary to our prediction, this difference was driven by the larger size of Gentoo penguins rather than smaller size of Adelie penguins. While bill length is positively correlated with body mass, the differences in bill length across species do not seem to be driving differences in body mass across species. This finding suggests that there may be other factors influencing body mass in these penguins that are not captured by bill length alone.
+
+## Implications
+
+Our findings offer insights into the morphological and ecological characteristics of Palmer penguins, which could have implications for understanding their biology and conservation. The strong positive correlation between body mass and bill length suggests that bill length may be a useful indicator of overall body size in penguins, which could be valuable for studies of penguin ecology and evolution. 
+
+However, the finding that differences in body mass across species are not solely associated with differences in bill length suggests that other factors associated with body mass may be more appropriate for use as general size proxy when mass is not available.
+
+## Limitations
+
+These analysis are limited by the observational nature of the data, which precludes causal inference. The imbalance in the number of observations across species may limit our ability to detect differences in body mass across species, particularly for Chinstrap penguins, though we do not have clear reason to believe the sample size or imbalance would have been an impediment to accuracy.
+
+Finally, our analyses focused on a limited set of variables and did not account for potential confounding factors that could influence body mass, such as age or environmental conditions. 
+
+Our analyses were primarily exploratory, with hypotheses about body mass patterns based primarily on general assumptions about morphological features scaling with overall size and typical patterns of sexual dimorphism in birds. Neither the questions nor the hypotheses were strongly motivated by previous research on penguins specifically, which we believe is more likely to significantly limit the interpretability and generalizability of our findings than sample size or analytic strategy.
+
+## Future Directions
+
+Future research could explore the factors influencing body mass in Palmer penguins beyond bill length, such as age, environmental conditions, or diet. Longitudinal studies tracking individual penguins over time could provide insights into how body mass changes with age and environmental factors. Additionally, experimental studies manipulating environmental conditions could help establish causal relationships between these factors and body mass. Finally, expanding the dataset to include more observations of Chinstrap penguins could help clarify species differences in body mass and improve the generalizability of findings across all three species.
+
+
