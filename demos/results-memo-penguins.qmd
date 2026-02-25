@@ -77,20 +77,19 @@ In all analyses, we exclude observations where any measurements included in the 
 
 ```{r}
 #| label: fig-distribution-1var-histogram
-#| fig-cap: "Distribution of [VARIABLE]."
+#| fig-cap: "Distribution of body mass."
 
-plot <- df |>
+df |>
     ggplot(aes(x = body_mass_g)) +
     geom_histogram()
 
-plot
 
 ```
 
 
 ```{r}
 #| label: tbl-distribution-1var-summary
-#| tbl-cap: "Summary statistics for [VARIABLE]."
+#| tbl-cap: "Summary statistics for body mass."
 
 df |> 
     summarize(
