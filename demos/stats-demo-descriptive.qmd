@@ -21,6 +21,7 @@ library(kableExtra) # nice tables (and migraines)
 library(rempsyc) # imperfect APA tables
 library(flextable) # yet another APA table option
 library(gt) # another table option, designed to be ggplot-ish
+library(janitor)
 
 # Other libraries we'll use later
 
@@ -48,9 +49,9 @@ knitr::opts_chunk$set(
 ```
 
 
-# Descriptive statistics
+# Summarize Data
 
-Descriptive statistics are used to summarize and describe data. Most commonly this includes measures of center (mean, median, mode) and spread (standard deviation, range), as well as visualizations of both.
+Descriptive statistics are used to summarize and describe data. This typically includes measures of center (mean, median, mode) and spread (standard deviation, range) for continuous data or frequencies and proportions for categorical data.
 
 In psychology and other quantitative social sciences, it's rare to have a journal article that is purely descriptive, but it's rarer to have one that doesn't include any descriptive statistics at all.
 Before you can do any inferential statistics, you need to know what your data looks like to decide what tests are appropriate. If you are working with human subjects, your reader will typically want to know some basic summary statistics about your sample of participants.
@@ -70,6 +71,7 @@ sw.desc.long <- sw.desc %>%
   pivot_longer(c(height, mass), names_to = "measure") 
 ```
 
+## Describe Continuous Variables
 
 The quickest way to see summary statistics for a numeric variable is the `summary()` function:
 
@@ -143,9 +145,186 @@ sw.desc.long %>%
 
 [^1]: Different from the `papaja::theme_apa()` function! If you have papaja loaded for some other purpose (like the $p$-value convenience functions), you'll need to use `flextable::theme_apa()`.
 
-## Distributions
+## Describe Categorical Variables
 
-### Calculate measures of center
+To summarize categorical variables, you can use the `table()` function to get counts of each category, and `prop.table()` to get proportions. For example, we can quickly look at counts and proportions of gender in the `starwars` dataset:
+
+```{r}
+#| label: categorical-summary
+
+table(starwars$gender)
+prop.table(table(starwars$gender))
+```
+You can visualize this with a bar plot of counts:
+
+```{r}
+#| label: fig-barplot-counts
+
+ggplot(starwars) +
+    geom_bar(aes(gender))
+    
+```
+For proportional distribution of categories in a single variable, you usually just report the numbers and don't visualize at all. In theory you could make a bar chart with a single "dummy" x-value:
+
+```{r}
+#| label: fig-barplot-props
+
+ggplot(starwars) +
+    geom_bar(aes(x=1, fill=gender), position = "fill") # position="fill" stacks bars and makes them the same height, so the y-axis shows proportions
+    
+```
+
+But that is weird.
+
+This is an occasion where a pie chart doesn't suck:
+
+```{r}
+#| label: fig-pie-chart
+
+ggplot(starwars) +
+    geom_bar(aes(x=1, fill=gender), position = "fill") +
+    coord_polar(theta = "y") # convert to polar coordinates, with the y-axis as the angle
+    
+```
+Or "donut" plot, where a single filled bar wraps around and connects to itself, equivalent to a pie chart with the center cut out:
+
+```{r}
+#| label: fig-donut-chart
+
+ggplot(starwars) +
+    geom_bar(aes(x=2, fill=gender), position = "fill") +
+    coord_polar(theta = "y") +
+    xlim(0.5, 2.5) # make the x-axis wider to create a "hole" in the middle
+```
+
+Distribution across multiple categorical variables is more interesting and more likely to actually be helped by visualization. For example, we can compare sex and gender in `starwars`:
+
+Summarize frequency across multiple variables with `table`, optionally adding margin calculations (e.g., a "Sum"/total row)
+
+```{r}
+#| label: tbl-cats-counts
+
+
+table(starwars$gender, starwars$sex)
+
+# Add a "Sum" column and row with addmargins():
+table(starwars$gender, starwars$sex) |> 
+    addmargins()
+
+# Or specify only column or row sum:
+table(starwars$gender, starwars$sex) |> 
+    addmargins(1)  # sum columns into a Sum row with 1 or rows into a col with 2
+
+```
+For proportional distributions, run the simple distribution table through `prop.table()`. By default, the table will calculate proportional distribution across all possible categories (i.e., *not* across groups/variables). Like with regular tables, you can add total rows with `addmargins()`.
+
+```{r}
+#| label: tbl-cats-props
+
+prop.table(table(starwars$gender, starwars$sex)) |> 
+    addmargins()
+
+```
+You can use the `margin` argument in `prop.table` to calculate proportions *by row* or *by column*.
+
+```{r}
+#| label: tbl-cats-props-margin
+
+prop.table(table(starwars$gender, starwars$sex), 
+    margin=1) # proportions across rows (i.e., within gender categories)
+
+
+# Add margins:
+
+prop.table(table(starwars$gender, starwars$sex), 
+    margin=1) |>  # proportions across rows (i.e., within gender categories)
+    addmargins(margin = 2) # add a summary column with 2, row with 1, or both with default/blank
+
+```
+
+
+Visualize these distributions with bar charts:
+
+```{r}
+#| label: fig-cat-cat
+
+# The "position" argument of `geom_bar` lets you choose to represent your data by
+# raw frequency with "stack" (default) or "dodge"
+
+ggplot(starwars) +
+    geom_bar(aes(gender, fill=sex), position="stack")
+
+# ...or proportionally with "fill"
+
+ggplot(starwars) +
+    geom_bar(aes(gender, fill=sex), position="fill") 
+
+
+```
+
+You can turn the distribution tables into data frames or tibbles to easily reference contained values and convert into publication-friendly formats. Keep it simple with `kable` if you just want to quickly convert console output to "clean":
+
+```{r}
+#| label: prop-table-kable
+
+prop.table(table(starwars$gender, starwars$sex)) |> 
+    addmargins() |> 
+    round(2) |> 
+    kbl()
+```
+
+
+Or turn your table into something customizable with `gt` or `flextable` by first converting to type `data.frame.matrix` and specifying row names:
+
+```{r}
+#| label: prop-table-gt
+
+tab <- prop.table(table(starwars$gender, starwars$sex)) |> 
+    addmargins() |> 
+    round(2)
+
+df <- as.data.frame.matrix(tab) |>
+  rownames_to_column(var = "gender")
+
+gt(df, rowname_col = "gender") |>
+  fmt_percent(columns = -gender, decimals = 1) |>
+  tab_stubhead(label = "Gender")
+
+
+```
+
+
+```{r}
+#| label: prop-table-flextable
+
+tab <- prop.table(table(starwars$gender, starwars$sex)) |>
+  addmargins() |> 
+    round(2)
+
+df <- as.data.frame.matrix(tab) |>
+  rownames_to_column(var = "gender")
+
+flextable(df)
+```
+
+
+Or skip the `table` altogether and create frequency and proportion tables with `janitor::tabyl`, which will allow you to easily "adorn" the basic table with things like percentage conversion and rounding before piping directly into gt/flextable.
+
+```{r}
+
+df <- tabyl(starwars, gender, sex) |>
+  adorn_totals(c("row", "col")) |>
+  adorn_percentages("all") |>
+  adorn_pct_formatting(digits = 1)
+
+gt(df)
+flextable(df)
+```
+
+
+# Distributions
+
+## Calculate measures of center
 
 You can also calculate everything piece by piece.
 
@@ -168,7 +347,7 @@ median_mass <- median(sw.desc$mass)
 
 
 
-### Calculate measures of spread
+## Calculate measures of spread
 
 Measures of spread describe the distribution of continuous data around the center. Calculate standard deviation with `sd()`. Calculate range by getting a list of the minimum and maximum with `range()` and then using `diff()` to find the difference between the two.
 
@@ -204,7 +383,7 @@ sw.desc.long %>%
 ```
 
 
-### Visualize center and spread
+## Visualize center and spread
 
 Distribution plots visualize center and spread, for example histograms (@fig-histogram), density plots (@fig-density), boxplots (@fig-boxplot), and violin plots (@fig-violin).
 
@@ -252,7 +431,7 @@ ggplot(sw.desc.long) +
 # to the nearest limit, so Jabba's huge mass will look like 300
 ```
 
-## Correlation
+# Correlation
 
 Correlation is a measure of the strength and direction of a linear relationship between two variables. It's not strictly speaking "descriptive," but it's not necessarily inferential either. 
 Whether you treat a correlation as descriptive or inferential depends on your research question and the context of your analysis, but the way you'll calculate and visualize it is the same either way. 
@@ -317,7 +496,7 @@ When you reference object elements in R Markdown (e.g., the $r$- or $p$-values),
   - Spearman ranked $\rho$ = `r round(mass_height_corr_Spearman$ci2[["r"]], 3)` ($p$ = `r round(mass_height_corr_Spearman$ci2[["p"]], 3)`)
 
 
-### Visualize correlation
+## Visualize correlation
 
 Visualizing correlation is functionally the same as visualizing linear regression (though to truly visualize correlation you'd need to normalize the axes). @fig-correlation combines a scatter plot with a regression line (using `geom_smooth()`):
 
@@ -374,8 +553,4 @@ ggcorrplot::ggcorrplot(Harman23.cor$cov, title="Harman data") +
   plot_annotation(tag_levels = "A")
 ```
 
-
-```{r}
-summary(factor(starwars$eye_color))
-```
 
