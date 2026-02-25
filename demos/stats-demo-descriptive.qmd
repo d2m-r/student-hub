@@ -20,6 +20,7 @@ library(patchwork) # "stitch" together multiple plots
 library(kableExtra) # nice tables (and migraines)
 library(rempsyc) # imperfect APA tables
 library(flextable) # yet another APA table option
+library(gt) # another table option, designed to be ggplot-ish
 
 # Other libraries we'll use later
 
@@ -30,6 +31,7 @@ library(flextable) # yet another APA table option
 
 ```{r}
 #| label: analysis-preferences
+#| warning: true
 #| include: false
 
 # Seed for random number generation
@@ -37,12 +39,11 @@ set.seed(42)
 
 # Set global chunk options
 knitr::opts_chunk$set(
-  cache.extra = knitr::rand_seed,
-  fig.height = 6,
+    #cache.extra = knitr::rand_seed,
+    fig.height = 6,
 	fig.width = 7,
 	message = FALSE,
-	warning = FALSE,
-	comment = ""
+	warning = FALSE
   )
 ```
 
@@ -198,7 +199,7 @@ sw.desc.long %>%
             median2 = quantile(value, probs=0.5),
             quartile = quantile(value, probs = c(.25, .75)),
             iqr1 = IQR(value)
-  ) %>% kbl()
+  ) #%>% kbl()
 
 ```
 
@@ -372,3 +373,9 @@ ggcorrplot::ggcorrplot(Harman23.cor$cov, title="Harman data") +
   ggcorrplot::ggcorrplot(Gorsuch, title="Gorsuch data") +
   plot_annotation(tag_levels = "A")
 ```
+
+
+```{r}
+summary(factor(starwars$eye_color))
+```
+

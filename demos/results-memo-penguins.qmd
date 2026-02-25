@@ -7,10 +7,12 @@ format:
 execute:
   warning: false
   message: false
+  echo: false
 ---
 
 ```{r}
 #| label: setup
+#| echo: true
 
 library(tidyverse)
 library(palmerpenguins)
@@ -63,7 +65,7 @@ missing_island <- sum(is.na(df$island))
 ```
 
 
-In all analyses, we exclude observations where any measurements included in the analysis are missing. Out of a total of `r total_observations`, `r missing_sex` did not include data on sex, `r missing_mass` did not included data on body mass, and `r missing_bill`did not included data on bill length.
+In all analyses, we exclude observations where any measurements included in the analysis are missing. Out of a total of `r nrow(df)`, `r missing_sex` did not include data on sex, `r missing_mass` did not include data on body mass, and `r missing_bill` did not include data on bill length.
 
 # Results
 
@@ -77,9 +79,11 @@ In all analyses, we exclude observations where any measurements included in the 
 #| label: fig-distribution-1var-histogram
 #| fig-cap: "Distribution of [VARIABLE]."
 
-df |>
+plot <- df |>
     ggplot(aes(x = body_mass_g)) +
     geom_histogram()
+
+plot
 
 ```
 
