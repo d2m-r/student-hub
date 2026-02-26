@@ -43,12 +43,15 @@ set.seed(42)
 
 # Set global chunk options
 knitr::opts_chunk$set(
-  cache.extra = knitr::rand_seed,
-  fig.height = 6,
+    fig.height = 6,
 	fig.width = 7,
 	message = FALSE,
 	warning = FALSE,
-	comment = ""
+    # comment arg. is the string of text displayed before each line of output
+    # knitr sets this to "##" by default, Quarto overwrites to ""
+    # I've set it to ">" for illustration, like what you see in actual console output
+    # but usually "" is good
+	comment = ">" 
   )
 ```
 
@@ -68,24 +71,24 @@ It's worth noting up top that for common stats like these, there are many ways t
 #| label: load-sw-df
 
 # Use built-in dataset 'starwars' for analysis
-sw.desc <- starwars %>% 
-  select(height, mass) %>% 
+sw.desc <- starwars |> 
+  select(height, mass) |> 
   drop_na() # or include the `na.rm=T` argument in your measures functions
 
 # Create a long version to use for dplyr and ggplot stuff later
-sw.desc.long <- sw.desc %>% 
+sw.desc.long <- sw.desc |> 
   pivot_longer(c(height, mass), names_to = "measure") 
 ```
 
-## Categorical Predictors
+# Categorical Predictors
 
-### Student's t-tests
+## Student's t-tests
 
 Student's[^1] $t$-test is the bread and butter of hypothesis testing. It's used to determine whether there is a significant difference between the means of two groups. They are commonly used to compare the means of a continuous dependent variable across two levels of a categorical independent variable.
 
 [^1]: Fun fact: William Sealy Gosset, a chemist at the Guinness brewery, published under the pseudonym "Student" because (allegedly) Guinness didn't want their competitors to know they were using statistics to improve their product.
 
-#### 1-sample
+### 1-sample
 
 A 1-sample $t$-test tells you the likelihood that the "true" mean of a value is not equal to 0 (or another reasonable, specific alternative).
 
@@ -128,7 +131,7 @@ That's not useful, but if we consider the full dataset the true, full population
 
 # Perform a 1-sample t-test on the mass variable with a specified mean
 # slice_sample randomly selects n rows from the df
-slice_sample(sw.desc, n=15) %>% 
+slice_sample(sw.desc, n=15) |> 
   t.test(sw.desc$mass,mu=mean(sw.desc$mass))
 ```
 
@@ -141,7 +144,7 @@ This is a case where median might be a better measure measure of center than mea
 
 # Create a new dataset without Jabba the Hutt (anything with mass more 
 # than 500% of the median)
-sw.desc.nojabba <- sw.desc %>% 
+sw.desc.nojabba <- sw.desc |> 
   filter(!(mass > 5*median(mass))) 
 ```
 
@@ -151,11 +154,11 @@ Now randomly sampling from the dataframe will usually *not* be significantly dif
 #| label: ttest-no-jabba
 
 # notice that only the mu argument uses the dataset without jabba
-slice_sample(sw.desc, n=25) %>% 
+slice_sample(sw.desc, n=25) |> 
   t.test(sw.desc$mass, mu=mean(sw.desc.nojabba$mass))
 ```
 
-#### 2-sample
+### 2-sample
 
 For 2-sample $t$-tests, we need to include grouping variables.
 
@@ -163,7 +166,7 @@ For 2-sample $t$-tests, we need to include grouping variables.
 #| label: sw-desc2-data
 
 # similar df as before but now with some possible grouping vars
-sw.desc2 <- starwars %>% 
+sw.desc2 <- starwars |> 
   select(sex, gender, species, homeworld, height, mass)
 ```
 
@@ -224,7 +227,7 @@ ttest2_humans_alt <- t.test(
 
 For humans, no. We cannot reject the null hypothesis that the means are the same ($t$ = `r round(ttest2_humans$statistic, 3)`, $p$ = `r round(ttest2_humans$p.value, 3)`).
 
-#### 1- or 2-sample; 1-tailed
+### 1- or 2-sample; 1-tailed
 
 Often we have a theoretical reason to expect a difference in one direction, especially if we are building on previous research. This is where you can use a 1-tailed $t$-test.
 
@@ -303,7 +306,7 @@ Compare the two outputs:
   
 What are the advantages of each? 
 
-#### Analysis choice
+### Analysis choice
 
 Take a second here to compare the motivations and results of the 1- and 2-tailed tests. The first test told us that, statistically, there's no difference between the means of males and females in the SWU. The second test said the opposite: that the mean mass of males is statistically significantly greater than the mean mass of females.
 
@@ -315,7 +318,7 @@ As a scientist, which results are we going to stand behind? The difference in to
 
 That said, don't avoid one-tailed tests in the name of "conservatism." It's not $p$-hacking to use a one-tailed test when you have a good reason to do so, it's just using statistics effectively to answer the specific question you have.
 
-#### Optional arguments
+### Optional arguments
 
 Important optional arguments for $t$-tests:
 
@@ -329,7 +332,7 @@ Important optional arguments for $t$-tests:
   - Set an alternative confidence interval when comparing means. This is rarely changed; 95% is almost always the expectation here.
     
 
-### ANOVA
+## ANOVA
 
 Think of an Analysis of Variance (ANOVA) as an extension of the $t$-test. With a $t$-test you can compare the mean of 1 group to a static value or the means of 2 groups to each other. The basic functionality of ANOVA is to allow you compare three or more groups.
 
@@ -341,11 +344,11 @@ Start by messing with the SW dataset to get it into a form that's useful for ANO
 #| label: starwars-hypothesis-data
 
 
-sw.hyp <- starwars %>% 
-  select(name, height, mass, hair_color, skin_color, eye_color, sex, gender, homeworld, species) %>% 
+sw.hyp <- starwars |> 
+  select(name, height, mass, hair_color, skin_color, eye_color, sex, gender, homeworld, species) |> 
   mutate(hair_color = str_remove(hair_color, "[,].*$"),
          eye_color = str_remove(eye_color, "[,].*$"),
-         skin_color = str_remove(skin_color, "[,].*$")) %>% 
+         skin_color = str_remove(skin_color, "[,].*$")) |> 
   mutate(sex3cat = case_when(sex %in% c("male", "female") ~ sex,
                             TRUE ~ "other"),
          hair4cat = case_when(hair_color %in% c("white", "grey") ~ "light",
@@ -371,13 +374,13 @@ sw.hyp <- starwars %>%
                               ),
          species3cat = ifelse(species %in% c("Human", "Droid"), 
                               species, "Other")
-  ) %>%
+  ) |>
   # let's also drop jabba
   filter(name != "Jabba Desilijic Tiure")
 ```
 
 
-#### 1-Way ANOVA
+### 1-Way ANOVA
 
 > **Applied Example:** A psychologist wants to compare the effectiveness of three different educational interventions (parent-guided, teacher-guided, student-guided) on reducing student test anxiety.
 
@@ -402,7 +405,7 @@ Here there is a trending but non-significant difference in height across the 3 s
 
 Using Tukey post-hoc adjustment we can see this difference is primarily driven by the difference in height between those in the "male" and "other" category (though even this difference in means is not significant).
 
-#### 2-Way ANOVA
+### 2-Way ANOVA
 
 > **Applied Example:** A psychologist conducts a study to investigate the effects of both biological sex (male vs. female) and stress level (low vs. high) on performance in a cognitive task.
 
@@ -459,7 +462,7 @@ In this case, there is one significant main effect (sex category) and no signifi
 
 Notice that although the output for Tukey post-hoc is functionally doing basically the same thing for both 1-way and 2-way ANOVAs (pairwise comparison), in 2-way ANOVA it is only comparing the levels of one factor variable at a time, not the combinations of the two. So in the
 
-#### ANOVA: Model fit
+### ANOVA: Model fit
 
 Aside from being used as a hypothesis test itself, another important use for ANOVA is comparing model fit. For example, you create 3 possible regressions to test whether household income and/or proximity to grocery stores affects stress level using one variable, both variables, or both and an interaction effect. Passing these models to the `anova()` function can tell you which model best explains a predictive effect, so you can move forward just using that model.
 
@@ -503,7 +506,7 @@ The order of the models in the `anova()` function matters. The output compares e
 How should you order them? Typically, you start with the simplest model and go in order of complexity. When "complexity" is hard to compare, you can use theoretical motivation to order them. For example, if two models are the same except they test different interaction effects, ask which interaction effect you think it most likely to actually exist (or be stronger). The more likely you think it is, the later you should test it so you can detect improvement model to model.
 
 
-### Chi-square 
+## Chi-square 
 
 The Chi-Square Test is used to determine whether there is a significant association between categorical variables. It tests for "independence" (the null hypothesis), where there is no association. You can think of it like a kind of conceptual "correlation" among categorical data.
 
@@ -577,9 +580,9 @@ The `papaja` package has a function `apa_p()` that will render a $p$-value accor
 In this case, $\chi^2$ = `r skin_hair_chi2$statistic[[1]]` ($p$ `r papaja::apa_p(skin_hair_chi2$p.value, add_equals=T)`). We can reject the null hypothesis and claim that there is an association between hair and skin color in characters in the Star Wars Universe. We cannot make any claims about direction of the association.
 
 
-## Continuous Predictors
+# Continuous Predictors
 
-### Linear Regression
+## Linear Regression
 
 Linear regression models the relationship between a continuous dependent variable and one or more (i.e., multiple regression) independent variables, at least one of which is also continuous. Linear modeling can also incorporate interaction effects between predictors.
 
@@ -689,7 +692,7 @@ We look for the model that has the lowest residual sum of squares (RSS) *that is
 
 Remember that order matters! Try shuffling the models around and seeing how the output changes.
 
-#### Visualizing multiple regression
+### Visualizing multiple regression
 
 Visualizing relationships between more than two continuous variables gets very complicated very quickly. Although there are ways to plot a regression onto three axes (e.g., the `plot3D` package), it's not super easy to produce or interpret, and there's to way to create plot with more than 3 dimensions.
 
@@ -702,9 +705,9 @@ If you only have one continuous independent variable (the others are categorical
 
 # scatterplot and regression line of MPG, HP, engine type, 
 # and transmission type
-mtcars %>% 
+mtcars |> 
   mutate(factor.am = factor(am),
-         factor.vs = factor(vs)) %>% 
+         factor.vs = factor(vs)) |> 
   ggplot(aes(x=hp, y=mpg, color=factor.am)) +
   geom_point() +
   geom_smooth(method="lm") + 
@@ -719,7 +722,7 @@ With multiple continuous predictors, you can use color, transparency, size, etc.
 #| label: fig-viz-mult-reg-two-cont
 #| fig-cap: "MPG by HP with 2 additional continuous variables"
 
-mtcars %>% 
+mtcars |> 
   ggplot(aes(x=hp, y=mpg)) +
   geom_point(aes(color=disp)) +
   geom_smooth(method="lm")
@@ -733,7 +736,7 @@ You can go crazy with even more continuous variables, but you probably shouldn't
 #| label: fig-viz-mult-reg-four-cont
 #| fig-cap: "MPG by HP with 4 additional continuous variables (aka chaos)"
 
-mtcars %>% 
+mtcars |> 
   ggplot(aes(x=hp, y=mpg)) +
   geom_point(aes(color=disp, alpha = wt, size = qsec)) +
   geom_smooth(method="lm") +
@@ -742,6 +745,8 @@ mtcars %>%
 ```
 
 
+
+## Generalized Linear Models
 
 ### Logistic Regression
 
@@ -760,7 +765,7 @@ The `glm()` function in the `stats` package allows us to run logistic regression
 ```{r logistic-cars}
 # Convert MPG to a binary variable
 
-mt2 <- mtcars %>% 
+mt2 <- mtcars |> 
   mutate(highMPG = ifelse(mpg > median(mtcars$mpg), 1, 0))
 
 # Fit logistic regression model
@@ -806,13 +811,193 @@ ggplot(mt2, aes(x = hp, y = highMPG)) +
 ```
 
 
-# More
 
-- Poisson GLM (GLM with `family=poisson`)
-  - used for count/frequency data
-  - e.g., a psychologist wants to determine whether each of 3 intervention options decreases the number of times symptomatic behaviors are used in an observation period
-- Generalized Linear Mixed-Effects Models (GLMM)
-  - used for nested or hierarchical data, where you need to account for random or spillover effects
-  - e.g., a psychologist want to determine the effectiveness of a teaching intervention. the intervention is administered at classroom level, but measured at the student level. the psychologist includes School ID as a random effect because they expect students will perform similarly to other students in their own school based on many factors unrelated to the intervention
+### Poisson GLM
+
+Poisson regression is a generalized linear model (GLM) used when your outcome variable is a **count**. It's a common choice when you want to model the expected number of events in some unit of time or space (symptoms per week, errors per task, behaviors per observation period).
+
+> **Applied example:** A psychologist tests whether total word tokens children produced in 1 hour increases over time, as measured at monthly recording sessions.
+
+A Poisson GLM is fit with `glm()` just like logistic regression, but you set `family = poisson`.
+
+We are switching up the data again here to use something with a count outcome. The `warpbreaks` dataset is a built-in dataset that contains the number of warp breaks per loom, where a loom corresponds to a fixed length of yarn. We can use this dataset to model the relationship between the type of yarn and the number of warp breaks using poisson GLM.^[If anyone has an idea for a fish-related dataset with clear count outomes I can use as an example, let me know.]
+
+```{r}
+#| label: poisson-warpbreaks
+
+# Fit Poisson regression model
+
+poisson_model <- glm(breaks ~ wool + tension, data = warpbreaks, family = poisson)
+
+# Summary of the model
+
+summary(poisson_model)
+```
+
+
+Interpreting the results, you see:
+
+1. intercept: the expected number of warp breaks for the reference category (wool A, tension L) is `r round(exp(coef(poisson_model)[["(Intercept)"]]), 3)` breaks per loom
+2. woolB: the expected number of warp breaks for wool B is `r round(exp(coef(poisson_model)[["woolB"]]), 3)` times the expected number of breaks for wool A, holding tension constant.
+3. tensionM: the expected number of warp breaks for tension M is `r round(exp(coef(poisson_model)[["tensionM"]]), 3)` times the expected number of breaks for tension L, holding wool constant. 
+4. tensionH: the expected number of warp breaks for tension H is `r round(exp(coef(poisson_model)[["tensionH"]]), 3)` times the expected number of breaks for tension L, holding wool constant. 
+
+All effects of wool and tension are significant, which means that the expected number of breaks is significantly different for wool B than A, and for tension M and H than L.
+
+Reference category matters! Examine the levels of both factors. The first levels are wool "A" and tension "L" (light). Wool B is compared directly to the reference Wool A. Both tensions "M" (medium) and "H" (heavy) are compared to reference tension L.
+
+We could have done this with a Gaussian linear model, but the Poisson GLM is more appropriate for count data. If we fit the same model without specifying `family=poisson`, we get different results that are less accurate and less meaningful.
+
+```{r}
+#| label: not-poisson-warpbreaks
+
+
+# Fit Poisson regression model
+
+not_poisson_model <- glm(breaks ~ wool + tension, data = warpbreaks)
+
+# Summary of the model
+
+summary(not_poisson_model)
+```
+
+
+
+
+### Generalized Linear Mixed-Effects Models (GLMM)
+
+Generalized linear mixed-effects models (GLMMs) are an extension of generalized linear models (GLMs) that include random effects. Random effects are used when your observations are clustered or **nested** (aka "hierarchical"), meaning they are not independent.
+
+Common "nesting" structures in psychology:
+
+- repeated measures (many observations per participant)
+- trials nested within participants (e.g., RT tasks)
+- students nested within classrooms (and classrooms within schools)
+- therapy clients nested within therapists
+
+> **Applied example:** A psychologist want to determine the effectiveness of a teaching intervention. The intervention is administered at classroom level, but measured at the student level. The psychologist includes School ID as a random effect because they expect students will perform similarly to other students in their own school based on many factors unrelated to the intervention.
+
+Conceptually, GLMMs let you combine:
+
+1. a **distribution family** appropriate for the outcome (e.g., binomial, Poisson), and  
+2. a **multilevel structure** (random intercepts and sometimes random slopes)
+
+In R, the most common workflow is `lme4::glmer()` (analogous to `glm()`).
+
+#### Random intercept example
+
+A random intercept model assumes each subject has their own baseline level of the outcome.
+
+```{r}
+#| label: glmm-sleepstudy-random-intercept
+
+# lme4 has a built-in repeated-measures dataset
+
+sleep <- lme4::sleepstudy
+
+# Mixed model (Gaussian outcome) to illustrate the random-effects idea:
+# Reaction time changes over days, and each subject has their own baseline
+
+m_lmm <- lmer(Reaction ~ Days + (1 | Subject), data = sleep)
+
+summary(m_lmm)
+
+```
+
+- `Reaction ~ Days` is the fixed effect, which is the overall average relationship.
+- `(1 | Subject)` is the random effect, which lets each subject have a different baseline.
+
+#### Making it "generalized" (non-Gaussian outcomes)
+
+If your outcome is **binary** (yes/no) or **count** data, you use `glmer()` and specify the distribution family, just like with `glm()`.
+
+- Binary outcome: `family = binomial`
+- Count outcome: `family = poisson`
+
+```{r}
+#| label: glmm-binary-demo
+
+# Toy demo: binary outcome with repeated observations within person
+
+demo_bin <- tibble(
+    person = rep(1:40, each = 10),
+    stress = rnorm(40 * 10)
+    ) |>
+    mutate(
+        # person-specific baseline propensity (random intercept idea, simulated)
+        b0_person = rep(rnorm(40, 0, 0.8), each = 10),
+        # generate binary outcome
+        y = rbinom(n(), size = 1, prob = plogis(-0.5 + 0.7 * stress + b0_person))
+        )
+
+# Logistic mixed model (binary outcome) with random intercept for person
+
+m_glmm_bin <- glmer(y ~ stress + (1 | person), data = demo_bin, family = binomial)
+
+summary(m_glmm_bin)
+
+```
+
+#### Random slopes 
+
+If you think the effect of a predictor differs by person (not just the baseline), you can include a random slope:
+
+- `(stress | person)` means baseline *and* stress effect can vary across people.
+
+```{r}
+
+#| label: glmm-random-slope
+
+m_glmm_bin_rs <- glmer(y ~ stress + (stress | person), data = demo_bin, family = binomial)
+
+summary(m_glmm_bin_rs)
+
+```
+
+
+**Fixed vs. random effects**: What's the difference? Who decides?
+
+The difference between fixed and random effects is more conceptual than statistical. A fixed effect is a predictor variable **that you are specifically interested in testing** (e.g., stress level), while a random effect is a grouping variable that accounts for non-independence in the data (e.g., person).
+
+Using a random-effects structure should match the design of your study and be theoretically motivated. A reasonable default is to start simple (random intercepts), then add complexity if you have a clear reason and the model fits stably.  
+
+In the example above, stress is what we care about, so it's a fixed effect. It's also *part* of a random effect (slope). It's in there twice because we want to test the overall effect of stress across people *and* allow that effect to vary across people. The person variable is only a random effect because we are not interested in testing differences between specific people, but we need to account for the fact that observations within the same person are not independent.
+
+## Slopes and intercepts: models with `1` and `0`: 
+
+In R's model formula syntax, `+ 1` and `+ 0` (or `- 1`) control whether the model includes an intercept term.
+
+The *intercept* is the predicted value of the outcome when all predictors are 0 (and for the reference level of any factors).
+
+- In linear regression: expected **outcome value** when predictors are 0
+- In logistic regression: expected **log-odds** when predictors are 0
+- In Poisson regression: expected **log expected count** when predictors are 0
+
+This is the default is to include the intercept with `1` or nothing. These are equivalent:
+
+- `y ~ x`
+- `y ~ 1 + x`
+
+So you'll mostly see `+ 1` only when someone is being explicit or doing something fancy with formula construction.
+
+Remove the intercept with `+ 0` or `- 1`.
+
+These are equivalent:
+
+- `y ~ x + 0`
+- `y ~ x - 1`
+
+**Why do this?** In psychology (and other social sciences), we frequently have meaningless intercepts. The interpretation of a regression's intercept "Y is 10 when X is 0" is nonsensical when the predictor X *literally cannot be 0*, for example in psychology:
+
+-   Age when your research question only concerns adults
+-   Hours of sleep when you would exclude participants who literally did not sleep^[They've clearly got other stuff going on.]
+-   Iterative predictors like trial number if trials start at 1: the intercept corresponds to "trial 0," which does not exist.
+-   Likert scales (when you choose to treat them as continuous), where you have defined min and max and 0 is less than the minimum possible value.
+
+Removing the intercept for models with categorical predictors can also be useful when you want to directly estimate group means rather than differences from a reference level. For example, with `y ~ group`, the coefficient for group B is the difference between group B and the reference group A. With `y ~ group + 0`, the coefficient for group B is the mean of group B itself.
+
+- With intercept: coefficients are usually *differences from a reference level* (for factors) and *slopes around that baseline*.
+- Without intercept: coefficients often become *group-specific means* (or group-specific log-means, log-odds, etc.).
+
 
 
